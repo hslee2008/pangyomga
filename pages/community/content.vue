@@ -43,19 +43,23 @@
         v-for="comment in comments"
         :key="comment.time"
         variant="outlined"
+        class="mb-2"
       >
         <template v-slot:prepend>
-          <v-avatar>
-            <v-img :src="comment?.userInfo?.photoURL"></v-img>
+          <v-avatar size="20">
+            <v-icon v-if="comment.anonymous" size="sm">mdi-incognito</v-icon>
+            <v-img v-else :src="comment?.userInfo?.photoURL"></v-img>
           </v-avatar>
-          <p class="ml-3">{{ comment.userInfo.displayName }}</p>
+          <p class="ml-2">
+            {{ comment.anonymous ? "비공개" : comment.userInfo.displayName }}
+          </p>
         </template>
 
         <v-card-text>
           <v-list-item-title>{{ comment.comment }}</v-list-item-title>
-          <v-list-item-subtitle>{{
-            new Date(comment.time).toLocaleDateString()
-          }}</v-list-item-subtitle>
+          <v-list-item-subtitle>
+            {{ new Date(comment.time).toLocaleDateString() }}
+          </v-list-item-subtitle>
         </v-card-text>
       </v-card>
     </div>

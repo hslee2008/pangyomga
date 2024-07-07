@@ -68,24 +68,25 @@
           <v-menu activator="parent">
             <v-list>
               <v-list-item
-                to="/cafe/recommendation/book"
-                title="책 추천"
-                prepend-icon="mdi-book"
+                to="/cafe/recommendation/user"
+                title="사용자 추천"
+                prepend-icon="mdi-account-group"
               ></v-list-item>
               <v-list-item
-                to="/cafe/recommendation/music"
-                title="음악 추천"
-                prepend-icon="mdi-music"
+                to="/cafe/recommendation/admin"
+                title="관리자 추천"
+                prepend-icon="mdi-security"
               ></v-list-item>
               <v-list-item
-                to="/cafe/recommendation/movie"
-                title="영화 추천"
-                prepend-icon="mdi-movie"
+                to="/cafe/recommendation/ai"
+                title="AI 추천"
+                prepend-icon="mdi-robot"
               ></v-list-item>
+
               <v-list-item
                 to="/cafe/stress-management"
                 title="스트레스 관리법"
-                prepend-icon="mdi-robot-happy"
+                prepend-icon="mdi-emoticon-happy"
               ></v-list-item>
             </v-list>
           </v-menu>

@@ -14,7 +14,7 @@
     <v-empty-state
       v-if="!Object.keys(database ?? {}).includes(type_list[type])"
       headline="등록된 글이 없어요"
-      text="이 주제와 관련된 글이 아직 등록되지 않았어요"
+      :text="`${type_list[type]} 관련된 글이 아직 등록되지 않았어요`"
       image="/mga.png"
     ></v-empty-state>
     <div v-else>
