@@ -141,6 +141,7 @@
 </template>
 
 <script setup>
+import { useTitle } from "@vueuse/core";
 import { onAuthStateChanged } from "firebase/auth";
 
 const drawer = ref(false);
@@ -153,4 +154,6 @@ onMounted(() => {
     userInfo.value = user;
   });
 });
+
+useTitle("마인즈");
 </script>
