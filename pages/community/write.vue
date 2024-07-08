@@ -16,7 +16,7 @@
         '외모',
         '가족',
         '학교폭력',
-        '금전',
+        '용돈 또는 돈',
       ]"
     ></v-select>
 
@@ -47,7 +47,7 @@
 import { ref as dbRef, set } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 
-const anonymous = ref(false)
+const anonymous = ref(false);
 const variety = ref("");
 const title = ref("");
 const content = ref("");
@@ -71,9 +71,18 @@ async function write() {
     userInfo: {
       photoURL: userInfo.value.photoURL,
       displayName: userInfo.value.displayName,
-      email: userInfo.value.email
+      email: userInfo.value.email,
     },
   });
   router.push(`./content/?time=${time}`);
+
+  const db_number = dbRef($db, `/community/share-emotion/number`);
+  //get value
+  let number = 0;
+  onValue(db_number, (snapshot) => {
+    number = snapshot.val();
+  });
+  //set value
+  set(db_number, number + 1);
 }
 </script>

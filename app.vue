@@ -7,7 +7,9 @@
             <v-img src="/mga.png"></v-img>
           </v-avatar>
         </NuxtLink>
-        <v-app-bar-title>마인즈</v-app-bar-title>
+        <NuxtLink to="/" class="text-decoration-none text-black ml-2">
+          <v-app-bar-title>마인즈</v-app-bar-title>
+        </NuxtLink>
 
         <template v-slot:append>
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -17,7 +19,7 @@
       <v-navigation-drawer v-model="drawer" location="end">
         <div class="d-flex justify-center align-center flex-column">
           <v-avatar>
-            <v-img src="mga.png"></v-img>
+            <v-img src="/mga.png"></v-img>
           </v-avatar>
           <v-app-bar-title>마인즈</v-app-bar-title>
         </div>
@@ -61,8 +63,8 @@
           </v-menu>
         </v-list-item>
         <v-list-item
-          title="힐링카페"
-          prepend-icon="mdi-coffee"
+          title="마음처방약국"
+          prepend-icon="mdi-hospital"
           append-icon="mdi-menu-down"
         >
           <v-menu activator="parent">
@@ -74,8 +76,8 @@
               ></v-list-item>
               <v-list-item
                 to="/cafe/recommendation/admin"
-                title="관리자 추천"
-                prepend-icon="mdi-security"
+                title="전문가 추천"
+                prepend-icon="mdi-account-child-circle"
               ></v-list-item>
               <v-list-item
                 to="/cafe/recommendation/ai"
@@ -120,6 +122,20 @@
 
         <br /><br /><br />
       </v-main>
+
+      <v-footer
+        style="
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          background-color: #ffeae4;
+        "
+      >
+        <div>
+          {{ new Date().getFullYear() }} —
+          <strong>심장박동 x 코딩인싸이트</strong>
+        </div>
+      </v-footer>
     </NuxtLayout>
   </v-app>
 </template>

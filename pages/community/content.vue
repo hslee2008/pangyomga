@@ -1,9 +1,9 @@
 <template>
   <div style="width: 100%" class="mx-4">
-    <h1>{{ content.title }}</h1>
+    <h1 class="mx-3 mt-5">{{ content?.title }}</h1>
 
     <div class="my-3">
-      <v-card v-if="content.anonymous" elevation="0">
+      <v-card v-if="content?.anonymous" elevation="0">
         <v-card-subtitle>
           <v-icon start>mdi-incognito</v-icon>
           비공개
@@ -18,16 +18,26 @@
       </v-card>
     </div>
 
-    <p>{{ content.content }}</p>
+    <p class="mx-3 text-justify">{{ content?.content }}</p>
 
     <br />
 
-    <v-btn block color="red" variant="outlined" @click="like_or_unlike">
-      <v-icon v-if="!liked">mdi-heart-outline</v-icon>
-      <v-icon v-else>mdi-heart</v-icon>
-    </v-btn>
+    <div class="d-flex">
+      <v-col cols="6">
+        <v-btn block color="red" variant="outlined" @click="like_or_unlike">
+          <v-icon v-if="!liked">mdi-heart-outline</v-icon>
+          <v-icon v-else>mdi-heart</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="6">
+        <v-btn block color="primary" variant="outlined">
+          <v-icon start>mdi-comment</v-icon>
+          {{ Object.keys(content?.comments ?? {}).length }}
+        </v-btn>
+      </v-col>
+    </div>
 
-    <hr class="my-10" />
+    <br /><br />
 
     <v-textarea
       v-model="comment"
@@ -83,7 +93,11 @@ const comment = ref("");
 
 const { $db, $auth } = useNuxtApp();
 
-onMounted(() => {
+onMounted(async () => {
+  await onAuthStateChanged($auth, (user) => {
+    userInfo.value = user;
+  });
+
   const db = dbRef($db, `/community/share-emotion/${variety}/${time}`);
   const liked_db = dbRef(
     $db,
@@ -101,10 +115,6 @@ onMounted(() => {
   });
   onValue(comments_db, (snapshot) => {
     comments.value = snapshot.val();
-  });
-
-  onAuthStateChanged($auth, (user) => {
-    userInfo.value = user;
   });
 });
 
@@ -145,5 +155,6 @@ function send() {
       email: userInfo.value.email,
     },
   });
+  comment.value = "";
 }
 </script>

@@ -1,14 +1,14 @@
 <template>
   <div style="width: 100%" class="mx-4">
     <v-chip-group v-model="type" selected-class="text-primary" mandatory>
-      <v-chip> 일반 고민 </v-chip>
+      <v-chip class="ml-3"> 일반 고민 </v-chip>
       <v-chip> 학업 </v-chip>
       <v-chip> 진학 </v-chip>
       <v-chip> 교우관계 </v-chip>
       <v-chip> 외모 </v-chip>
       <v-chip> 가족 </v-chip>
       <v-chip> 학교폭력 </v-chip>
-      <v-chip> 금전 </v-chip>
+      <v-chip class="mr-4"> 용돈 또는 돈 </v-chip>
     </v-chip-group>
 
     <v-empty-state
@@ -32,6 +32,13 @@
 
           <v-list-item-title>{{ item.title }}</v-list-item-title>
           <v-list-item-subtitle>{{ item.content }}</v-list-item-subtitle>
+
+          <template v-slot:append>
+            <div style="color: red;">
+              <v-icon>mdi-heart</v-icon>
+              {{ Object.keys(item.liked ?? {}).length }}
+            </div>
+          </template>
         </v-list-item>
       </v-list>
     </div>
@@ -44,7 +51,7 @@
       app
       appear
       icon="mdi-pencil"
-      to="./write"
+      to="/community/write"
     ></v-fab>
   </div>
 </template>
@@ -60,7 +67,7 @@ const type_list = [
   "외모",
   "가족",
   "학교폭력",
-  "금전",
+  "용돈 또는 돈",
 ];
 const type = ref(0);
 const database = ref({});
