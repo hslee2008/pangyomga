@@ -23,13 +23,13 @@
     <br />
 
     <div class="d-flex">
-      <v-col cols="6">
+      <v-col v-if="userInfo" cols="6">
         <v-btn block color="red" variant="outlined" @click="like_or_unlike">
           <v-icon v-if="!liked">mdi-heart-outline</v-icon>
           <v-icon v-else>mdi-heart</v-icon>
         </v-btn>
       </v-col>
-      <v-col cols="6">
+      <v-col :cols="userInfo ? 6 : 12">
         <v-btn block color="primary" variant="outlined">
           <v-icon start>mdi-comment</v-icon>
           {{ Object.keys(content?.comments ?? {}).length }}
@@ -39,14 +39,16 @@
 
     <br /><br />
 
-    <v-textarea
-      v-model="comment"
-      variant="outlined"
-      label="댓글 달기"
-      append-icon="mdi-send"
-      @click:append="send"
-    ></v-textarea>
-    <v-checkbox v-model="anonymous" label="비공개로 댓글 달기"></v-checkbox>
+    <div v-if="userInfo">
+      <v-textarea
+        v-model="comment"
+        variant="outlined"
+        label="댓글 달기"
+        append-icon="mdi-send"
+        @click:append="send"
+      ></v-textarea>
+      <v-checkbox v-model="anonymous" label="비공개로 댓글 달기"></v-checkbox>
+    </div>
 
     <div>
       <v-card
@@ -96,22 +98,25 @@ const { $db, $auth } = useNuxtApp();
 onMounted(async () => {
   await onAuthStateChanged($auth, (user) => {
     userInfo.value = user;
+
+    if (userInfo.value) {
+      const liked_db = dbRef(
+        $db,
+        `/community/share-emotion/${variety}/${time}/liked/${userInfo.value.uid}`
+      );
+      onValue(liked_db, (snapshot) => {
+        liked.value = snapshot.val();
+      });
+    }
   });
 
   const db = dbRef($db, `/community/share-emotion/${variety}/${time}`);
-  const liked_db = dbRef(
-    $db,
-    `/community/share-emotion/${variety}/${time}/liked/${userInfo.value.uid}`
-  );
   const comments_db = dbRef(
     $db,
     `/community/share-emotion/${variety}/${time}/comments`
   );
   onValue(db, (snapshot) => {
     content.value = snapshot.val();
-  });
-  onValue(liked_db, (snapshot) => {
-    liked.value = snapshot.val();
   });
   onValue(comments_db, (snapshot) => {
     comments.value = snapshot.val();

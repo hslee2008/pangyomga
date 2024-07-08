@@ -11,10 +11,8 @@
         <v-rating
           v-model="answers[i]"
           length="5"
-          empty-icon="mdi-star-outline"
-          full-icon="mdi-star"
-          half-icon="mdi-star-half-full"
-          color="yellow"
+          empty-icon="mdi-heart-outline"
+          full-icon="mdi-heart"
           background-color="grey"
         ></v-rating>
       </div>
@@ -52,8 +50,8 @@
           </v-card>
         </div>
 
-        <iframe height="100%" src="http://www.snuh.org/health/nMedInfo/nView.do?category=DIS&medid=AA000358" style="border: none"></iframe>
-     
+        <v-spacer />
+
         <v-card-actions class="d-flex justify-center">
           <v-btn variant="tonal" @click="dialog = false">닫기</v-btn>
         </v-card-actions>
@@ -63,7 +61,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref as dbRef, set, onValue } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
+
+const userInfo = ref({});
 
 const dialog = ref(false);
 const totalScore = ref(0);
@@ -96,20 +97,40 @@ const adhd = [
   "자존감과 성취감이 낮습니까?",
   "감정을 과도하게 평가합니까?",
 ];
+const { $auth, $db } = useNuxtApp();
 
-// Use a reactive object to ensure reactivity with arrays
 const answers = reactive(Array(adhd.length).fill(0));
 
+onMounted(() => {
+  onAuthStateChanged($auth, (user) => {
+    if (user) {
+      userInfo.value = user;
+
+      const user_db = dbRef($db, `users/${userInfo.value.uid}/adhd`);
+      onValue(user_db, (snapshot) => {
+        const data = snapshot.val();
+
+        if (data) {
+          answers.value = data.answers;
+          totalScore.value = data.score;
+
+          dialog.value = true;
+        }
+      });
+    }
+  });
+});
+
 const submitAnswers = () => {
-  console.log("User's answers:", answers);
   totalScore.value = answers.reduce((a, b) => a + b, 0);
+
+  const user_db = dbRef($db, `users/${userInfo.value.uid}/adhd`);
+  set(user_db, {
+    score: totalScore.value,
+    answers: answers.toString(),
+    date: new Date().getTime(),
+  });
+
   dialog.value = true;
 };
 </script>
-
-<style>
-.selected-button {
-  background-color: #1976d2 !important; /* Vuetify primary color */
-  color: white !important;
-}
-</style>

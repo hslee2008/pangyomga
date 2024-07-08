@@ -1,4 +1,6 @@
 <template>
+  <NuxtLoadingIndicator />
+
   <v-app>
     <NuxtLayout>
       <v-app-bar elevation="0">
@@ -124,6 +126,7 @@
       </v-main>
 
       <v-footer
+        v-if="route.path === '/'"
         style="
           position: absolute;
           bottom: 0;
@@ -144,6 +147,7 @@
 import { useTitle } from "@vueuse/core";
 import { onAuthStateChanged } from "firebase/auth";
 
+const route = useRoute();
 const drawer = ref(false);
 const userInfo = ref({});
 

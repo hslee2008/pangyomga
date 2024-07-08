@@ -4,7 +4,7 @@
 
     <br />
 
-    <v-card variant="outlined" class="py-3">
+    <v-card variant="outlined" class="py-3" width="100%">
       <div class="d-flex align-center">
         <v-avatar class="ml-5">
           <v-img :src="userInfo.photoURL"></v-img>
@@ -18,6 +18,16 @@
           </v-card-subtitle>
         </div>
       </div>
+
+      <v-btn
+        @click="logout"
+        variant="outlined"
+        color="red"
+        width="calc(100% - 33px)"
+        class="mx-4 mt-3"
+      >
+        로그아웃
+      </v-btn>
     </v-card>
   </div>
 </template>
@@ -34,4 +44,9 @@ onMounted(() => {
     userInfo.value = user;
   });
 });
+
+const logout = () => {
+  $auth.signOut();
+  router.push("/");
+};
 </script>

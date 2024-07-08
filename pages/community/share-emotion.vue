@@ -34,7 +34,7 @@
           <v-list-item-subtitle>{{ item.content }}</v-list-item-subtitle>
 
           <template v-slot:append>
-            <div style="color: red;">
+            <div style="color: red">
               <v-icon>mdi-heart</v-icon>
               {{ Object.keys(item.liked ?? {}).length }}
             </div>
@@ -44,6 +44,7 @@
     </div>
 
     <v-fab
+      v-if="userInfo"
       location="bottom end"
       size="50"
       color="#FFEAE4"
@@ -58,6 +59,7 @@
 
 <script setup>
 import { ref as dbRef, onValue } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
 
 const type_list = [
   "일반 고민",
@@ -71,14 +73,19 @@ const type_list = [
 ];
 const type = ref(0);
 const database = ref({});
+const userInfo = ref({});
 
-const { $db } = useNuxtApp();
+const { $auth, $db } = useNuxtApp();
 
 onMounted(() => {
   const db = dbRef($db, `/community/share-emotion`);
   onValue(db, (snapshot) => {
     const data = snapshot.val();
     database.value = data;
+  });
+
+  onAuthStateChanged($auth, (user) => {
+    userInfo.value = user;
   });
 });
 </script>
