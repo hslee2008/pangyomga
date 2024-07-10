@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%" class="mx-4">
+  <div style="width: 100%">
     <v-chip-group v-model="type" selected-class="text-primary" mandatory>
       <v-chip class="ml-3"> 일반 고민 </v-chip>
       <v-chip> 학업 </v-chip>
@@ -26,7 +26,8 @@
         >
           <template v-slot:prepend>
             <v-avatar>
-              <v-img :src="item.userInfo.photoURL"></v-img>
+              <v-icon v-if="item.anonymous">mdi-incognito</v-icon>
+              <v-img v-else :src="item.userInfo.photoURL"></v-img>
             </v-avatar>
           </template>
 
@@ -89,3 +90,52 @@ onMounted(() => {
   });
 });
 </script>
+
+<style scoped>
+.v-chip {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.v-chip-group {
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  background-color: #f5f5f5;
+}
+
+.v-list-item {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.v-list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.v-list-item-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.v-list-item-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.v-avatar {
+  margin-right: 10px;
+}
+
+.v-icon {
+  font-size: 1.2rem;
+}
+
+.v-fab {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+.v-fab:hover {
+  transform: scale(1.1);
+}
+</style>

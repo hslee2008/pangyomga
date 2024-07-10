@@ -1,81 +1,67 @@
 <template>
-  <div style="width: 100%" class="mx-4">
-    <v-card v-for="(item, i) in elasticity" :key="item" elevation="0">
-      <v-card-text>{{ item }}</v-card-text>
-
+  <div class="mx-4" style="width: 100%; max-width: 600px; margin: auto">
+    <v-card v-for="(item, i) in elasticity" :key="i" elevation="2" class="my-4">
+      <v-card-text class="text-center font-weight-bold">{{ item }}</v-card-text>
       <div class="d-flex justify-center">
-        <v-btn-toggle v-model="elasticity_index[i]">
-          <v-btn value="true">
+        <v-btn-toggle v-model="elasticity_index[i]" class="mt-2">
+          <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
           </v-btn>
-
-          <v-btn value="false">
+          <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
           </v-btn>
         </v-btn-toggle>
       </div>
-
-      <br />
     </v-card>
 
-    <v-card v-for="(item, i) in excited" :key="item" elevation="0">
-      <v-card-text>{{ item }}</v-card-text>
-
+    <v-card v-for="(item, i) in excited" :key="i" elevation="2" class="my-4">
+      <v-card-text class="text-center font-weight-bold">{{ item }}</v-card-text>
       <div class="d-flex justify-center">
-        <v-btn-toggle v-model="excited_index[i]">
-          <v-btn value="true">
+        <v-btn-toggle v-model="excited_index[i]" class="mt-2">
+          <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
           </v-btn>
-
-          <v-btn value="false">
+          <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
           </v-btn>
         </v-btn-toggle>
       </div>
-
-      <br />
     </v-card>
 
-    <v-card v-for="(item, i) in myway" :key="item" elevation="0">
-      <v-card-text>{{ item }}</v-card-text>
-
+    <v-card v-for="(item, i) in myway" :key="i" elevation="2" class="my-4">
+      <v-card-text class="text-center font-weight-bold">{{ item }}</v-card-text>
       <div class="d-flex justify-center">
-        <v-btn-toggle v-model="myway_index[i]">
-          <v-btn value="true">
+        <v-btn-toggle v-model="myway_index[i]" class="mt-2">
+          <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
           </v-btn>
-
-          <v-btn value="false">
+          <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
           </v-btn>
         </v-btn-toggle>
       </div>
-
-      <br />
     </v-card>
 
-    <v-card v-for="(item, i) in onestep" :key="item" elevation="0">
-      <v-card-text>{{ item }}</v-card-text>
-
+    <v-card v-for="(item, i) in onestep" :key="i" elevation="2" class="my-4">
+      <v-card-text class="text-center font-weight-bold">{{ item }}</v-card-text>
       <div class="d-flex justify-center">
-        <v-btn-toggle v-model="onestep_index[i]">
-          <v-btn value="true">
+        <v-btn-toggle v-model="onestep_index[i]" class="mt-2">
+          <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
           </v-btn>
-
-          <v-btn value="false">
+          <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
           </v-btn>
         </v-btn-toggle>
       </div>
-
-      <br />
     </v-card>
 
-    <br />
+    <br /><br />
 
-    <div class="d-flex justify-center">
-      <v-btn block color="primary" @click="result">결과 보기!</v-btn>
+    <div class="d-flex justify-center my-4">
+      <v-btn block color="primary" variant="tonal" @click="result" class="py-4">
+        결과 보기!
+      </v-btn>
     </div>
   </div>
 </template>
@@ -163,3 +149,29 @@ function result() {
   );
 }
 </script>
+
+<style scoped>
+.v-card-text {
+  font-size: 1.1rem;
+}
+
+.v-btn {
+  min-width: 50px;
+}
+
+.v-btn .v-icon {
+  font-size: 1.5rem;
+}
+
+.v-btn.block {
+  width: 100%;
+}
+
+.v-btn-toggle {
+  width: 100%;
+}
+
+.v-btn-toggle > .v-btn {
+  width: 50%;
+}
+</style>

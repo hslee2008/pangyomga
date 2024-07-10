@@ -86,3 +86,41 @@ async function write() {
   set(db_number, number + 1);
 }
 </script>
+
+<style scoped>
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.v-select, .v-text-field, .v-textarea {
+  margin-bottom: 16px;
+}
+
+.v-select {
+  width: 100%;
+}
+
+.v-text-field, .v-textarea {
+  width: 100%;
+}
+
+.v-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.v-btn:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.05);
+}
+
+.v-icon {
+  font-size: 1.2rem;
+}
+</style>

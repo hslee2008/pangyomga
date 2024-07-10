@@ -163,3 +163,61 @@ function send() {
   comment.value = "";
 }
 </script>
+
+<style scoped>
+.v-btn {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.v-btn:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.05);
+}
+
+.v-icon {
+  font-size: 1.2rem;
+}
+
+.v-avatar {
+  margin-right: 10px;
+}
+
+.v-avatar[size="20"] {
+  width: 20px;
+  height: 20px;
+}
+
+.v-card {
+  margin-bottom: 16px;
+  border-radius: 10px;
+}
+
+.v-card-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.v-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.v-list-item-title {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.v-list-item-subtitle {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.v-textarea {
+  margin-bottom: 8px;
+}
+
+.v-checkbox {
+  margin-top: -8px;
+}
+</style>

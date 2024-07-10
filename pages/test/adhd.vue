@@ -134,3 +134,29 @@ const submitAnswers = () => {
   dialog.value = true;
 };
 </script>
+
+<style scoped>
+.v-card-text {
+  font-size: 1.1rem;
+}
+
+.v-btn {
+  min-width: 50px;
+}
+
+.v-btn .v-icon {
+  font-size: 1.5rem;
+}
+
+.v-btn.block {
+  width: 100%;
+}
+
+.v-btn-toggle {
+  width: 100%;
+}
+
+.v-btn-toggle > .v-btn {
+  width: 50%;
+}
+</style>
