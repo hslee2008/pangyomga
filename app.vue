@@ -3,7 +3,7 @@
 
   <v-app>
     <NuxtLayout>
-      <v-app-bar elevation="0">
+      <v-app-bar :elevation="y === 0 || drawer ? 0 : 4">
         <NuxtLink to="/">
           <v-avatar class="ml-3">
             <v-img src="/mga.png"></v-img>
@@ -18,16 +18,7 @@
         </template>
       </v-app-bar>
 
-      <v-navigation-drawer v-model="drawer" location="end">
-        <div class="d-flex justify-center align-center flex-column">
-          <v-avatar>
-            <v-img src="/mga.png"></v-img>
-          </v-avatar>
-          <v-app-bar-title>마인즈</v-app-bar-title>
-        </div>
-
-        <v-divider class="my-3"></v-divider>
-
+      <v-navigation-drawer v-model="drawer" location="end" temporary>
         <v-list-item to="/" title="홈" prepend-icon="mdi-home"></v-list-item>
         <v-list-item
           title="커뮤니티"
@@ -144,6 +135,7 @@
 </template>
 
 <script setup>
+import { useWindowScroll } from "@vueuse/core";
 import { useTitle } from "@vueuse/core";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -152,6 +144,8 @@ const drawer = ref(false);
 const userInfo = ref({});
 
 const { $auth } = useNuxtApp();
+
+const { x, y } = useWindowScroll();
 
 onMounted(() => {
   onAuthStateChanged($auth, (user) => {

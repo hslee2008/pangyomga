@@ -43,10 +43,12 @@
       </div>
     </v-card>
 
-    <div class="text-center my-4">
-      <v-btn @click="submitAnswers" block color="primary" variant="tonal"
-        >결과 보기!</v-btn
-      >
+    <br /><br />
+
+    <div class="d-flex">
+      <v-btn @click="submitAnswers" block color="primary" variant="tonal">
+        결과 보기
+      </v-btn>
     </div>
   </div>
 </template>

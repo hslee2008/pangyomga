@@ -129,13 +129,4 @@ onMounted(() => {
 .v-icon {
   font-size: 1.2rem;
 }
-
-.v-fab {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out;
-}
-
-.v-fab:hover {
-  transform: scale(1.1);
-}
 </style>

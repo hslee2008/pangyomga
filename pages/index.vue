@@ -1,41 +1,31 @@
 <template>
   <div style="width: 100%" class="mx-4">
-    <div
-      style="height: calc(100vh - 100px)"
-      class="d-flex justify-center align-center"
-    >
+    <div class="section d-flex justify-center align-center">
       <div class="text-center">
         <v-slide-y-transition v-show="home1">
-          <v-img src="/mga.png" width="100" class="ma-auto mb-2 heart-logo mb-3"></v-img>
+          <v-img
+            src="/mga.png"
+            width="100"
+            class="ma-auto mb-2 heart-logo mb-3"
+          ></v-img>
         </v-slide-y-transition>
         <v-slide-y-transition v-show="home2">
           <div>
-            <h1>마인즈</h1>
-            <p>판교고 학생들을 위한</p>
-            <p>맞춤형 서비스</p>
+            <h1 class="hero-title">마인즈</h1>
+            <p class="hero-subtitle">판교고 학생들을 위한 맞춤형 서비스</p>
           </div>
         </v-slide-y-transition>
       </div>
     </div>
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+    <br /><br /><br />
 
-    <div ref="target" class="mx-4">
-      <h1 class="text-center mb-5">마인즈</h1>
-
+    <div ref="target" class="section">
+      <h1 class="text-center mb-5 section-title">마인즈</h1>
       <v-slide-x-transition>
-        <v-card v-show="targetIsVisible" variant="outlined">
+        <v-card v-show="targetIsVisible" class="custom-card">
           <v-card-title>감정 나누기</v-card-title>
-          <v-card-subtitle
-            class="text-h4 font-weight-black"
-            style="color: #db1307"
-          >
+          <v-card-subtitle class="custom-subtitle">
             {{ share_emotion }}개
           </v-card-subtitle>
           <v-card-text>
@@ -45,19 +35,13 @@
       </v-slide-x-transition>
     </div>
 
-    <br /><br /><br /><br />
-
-    <div v-if="userInfo" ref="target2" class="mx-4">
-      <h1 class="text-center mb-5">나의 활동</h1>
-
+    <div v-if="userInfo" ref="target2" class="section">
+      <h1 class="text-center mb-5 section-title">나의 활동</h1>
       <v-slide-x-transition>
-        <v-card v-show="targetIsVisible2" variant="outlined">
+        <v-card v-show="targetIsVisible2" class="custom-card">
           <v-card-title>ADHD 검사</v-card-title>
-          <v-card-subtitle
-            class="text-h4 font-weight-black"
-            style="color: #db1307"
-          >
-            {{ userInfo.adhd.score }}점
+          <v-card-subtitle class="custom-subtitle">
+            {{ userInfo?.adhd?.score }}점
           </v-card-subtitle>
           <v-card-text>
             자신의 ADHD 점수를 확인하고, 전문가와 상담을 받아보세요.
@@ -65,13 +49,11 @@
         </v-card>
       </v-slide-x-transition>
     </div>
-
-    <br /><br /><br /><br />
   </div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
 import { ref as dbRef, onValue } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
@@ -96,7 +78,7 @@ const { stop } = useIntersectionObserver(
     setTimeout(() => (targetIsVisible.value = isIntersecting), 500);
   }
 );
-const { stop2 } = useIntersectionObserver(
+const { stop: stop2 } = useIntersectionObserver(
   target2,
   ([{ isIntersecting }], observerElement) => {
     setTimeout(() => (targetIsVisible2.value = isIntersecting), 500);
@@ -104,12 +86,9 @@ const { stop2 } = useIntersectionObserver(
 );
 
 onMounted(() => {
-  setTimeout(() => (home1.value = true), 300);
-  setTimeout(() => (home2.value = true), 400);
-
   const db = dbRef($db, "community/share-emotion/number");
   onValue(db, (snapshot) => {
-    share_emotion.value = snapshot.val();
+    share_emotion.value = snapshot.val() ?? 0;
   });
 
   onAuthStateChanged($auth, (user) => {
@@ -123,5 +102,48 @@ onMounted(() => {
       });
     }
   });
+
+  setTimeout(() => (home1.value = true), 300);
+  setTimeout(() => (home2.value = true), 1000);
 });
 </script>
+
+<style scoped>
+html {
+  scroll-snap-type: y mandatory;
+}
+
+.section {
+  scroll-snap-align: start;
+  height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #757575;
+}
+
+.custom-card {
+  border-radius: 10px;
+}
+
+.custom-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.custom-subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #db1307;
+}
+</style>

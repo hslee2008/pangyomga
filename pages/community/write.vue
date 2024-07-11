@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref as dbRef, set } from "firebase/database";
+import { ref as dbRef, set, onValue } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 
 const anonymous = ref(false);
@@ -95,7 +95,9 @@ h1 {
   margin-bottom: 16px;
 }
 
-.v-select, .v-text-field, .v-textarea {
+.v-select,
+.v-text-field,
+.v-textarea {
   margin-bottom: 16px;
 }
 
@@ -103,7 +105,8 @@ h1 {
   width: 100%;
 }
 
-.v-text-field, .v-textarea {
+.v-text-field,
+.v-textarea {
   width: 100%;
 }
 

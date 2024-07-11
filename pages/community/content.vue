@@ -39,7 +39,7 @@
 
     <br /><br />
 
-    <div v-if="userInfo">
+    <div v-if="userInfo" class="comment-container">
       <v-textarea
         v-model="comment"
         variant="outlined"
@@ -47,8 +47,10 @@
         append-icon="mdi-send"
         @click:append="send"
       ></v-textarea>
-      <v-checkbox v-model="anonymous" label="비공개로 댓글 달기"></v-checkbox>
+      <v-checkbox v-model="anonymous" label="비공개로 댓글 달기" style="margin-bottom: -20px;"></v-checkbox>
     </div>
+
+    <br /><br />
 
     <div>
       <v-card
@@ -219,5 +221,43 @@ function send() {
 
 .v-checkbox {
   margin-top: -8px;
+}
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-textarea {
+  margin-bottom: 20px;
+}
+
+.v-textarea .v-input__control {
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  padding: 10px;
+}
+
+.v-textarea .v-label {
+  color: #424242;
+  font-weight: 600;
+}
+
+.v-checkbox .v-label {
+  color: #424242;
+  font-weight: 500;
+}
+
+.custom-checkbox {
+  margin-top: 10px;
+  color: #424242;
+}
+
+.custom-checkbox .v-input--selection-controls__ripple {
+  color: #1976d2; /* Change to your desired color */
 }
 </style>

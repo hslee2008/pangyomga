@@ -5,7 +5,7 @@
     <br />
 
     <v-card v-for="(item, i) in adhd" :key="i" elevation="0">
-      <v-card-text>{{ item }}</v-card-text>
+      <v-card-text class="text-center">{{ item }}</v-card-text>
 
       <div class="d-flex justify-center">
         <v-rating
@@ -13,7 +13,7 @@
           length="5"
           empty-icon="mdi-heart-outline"
           full-icon="mdi-heart"
-          background-color="grey"
+          clearable
         ></v-rating>
       </div>
 

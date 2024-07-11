@@ -7,6 +7,7 @@
   position: relative;
   transform: scale(1); /* 기본 크기 */
   animation: beat 1s infinite; /* beat 애니메이션을 1초 주기로 무한 반복 */
+  animation-delay: 1s;
 }
 
 /* 애니메이션 설정 */
