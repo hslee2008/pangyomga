@@ -6,7 +6,7 @@
     >
       <div class="text-center">
         <v-slide-y-transition v-show="home1">
-          <v-img src="/mga.png" width="100" class="ma-auto mb-2"></v-img>
+          <v-img src="/mga.png" width="100" class="ma-auto mb-2 heart-logo mb-3"></v-img>
         </v-slide-y-transition>
         <v-slide-y-transition v-show="home2">
           <div>

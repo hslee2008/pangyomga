@@ -135,28 +135,59 @@ const submitAnswers = () => {
 };
 </script>
 
-<style scoped>
+<style>
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.v-card {
+  border-radius: 10px;
+  padding: 16px;
+  background-color: #f9f9f9;
+}
+
 .v-card-text {
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+
+.v-rating {
+  display: flex;
+  justify-content: center;
 }
 
 .v-btn {
-  min-width: 50px;
+  display: block;
+  margin: 0 auto;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.v-btn .v-icon {
+.v-btn:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.v-dialog .v-card {
+  padding: 16px;
+}
+
+.v-card-title {
   font-size: 1.5rem;
+  font-weight: bold;
 }
 
-.v-btn.block {
-  width: 100%;
+.v-card-subtitle {
+  font-size: 1rem;
+  color: #666;
 }
 
-.v-btn-toggle {
-  width: 100%;
+.v-card-actions {
+  display: block;
+  text-align: center;
 }
 
-.v-btn-toggle > .v-btn {
-  width: 50%;
+.v-btn.tonal {
+  background-color: #e0e0e0;
 }
 </style>

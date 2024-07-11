@@ -6,9 +6,11 @@
         <v-btn-toggle v-model="elasticity_index[i]" class="mt-2">
           <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
+            <span>참</span>
           </v-btn>
           <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
+            <span>거짓</span>
           </v-btn>
         </v-btn-toggle>
       </div>
@@ -20,9 +22,11 @@
         <v-btn-toggle v-model="excited_index[i]" class="mt-2">
           <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
+            <span>참</span>
           </v-btn>
           <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
+            <span>거짓</span>
           </v-btn>
         </v-btn-toggle>
       </div>
@@ -34,9 +38,11 @@
         <v-btn-toggle v-model="myway_index[i]" class="mt-2">
           <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
+            <span>참</span>
           </v-btn>
           <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
+            <span>거짓</span>
           </v-btn>
         </v-btn-toggle>
       </div>
@@ -48,9 +54,11 @@
         <v-btn-toggle v-model="onestep_index[i]" class="mt-2">
           <v-btn value="true" color="success">
             <v-icon>mdi-alpha-o</v-icon>
+            <span>참</span>
           </v-btn>
           <v-btn value="false" color="error">
             <v-icon>mdi-alpha-x</v-icon>
+            <span>거짓</span>
           </v-btn>
         </v-btn-toggle>
       </div>

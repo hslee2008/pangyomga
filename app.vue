@@ -52,7 +52,7 @@
           <v-menu activator="parent">
             <v-list>
               <v-list-item
-                to="/test/psychology"
+                to="/test/"
                 title="심리검사"
                 prepend-icon="mdi-head-cog"
               ></v-list-item>

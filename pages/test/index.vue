@@ -4,7 +4,7 @@
 
     <br />
 
-    <v-card to="./personality">
+    <v-card to="/test/personality">
       <v-img
         class="align-end text-white"
         height="200"
@@ -26,7 +26,7 @@
 
     <br />
 
-    <v-card to="./personality">
+    <v-card to="/test/adhd">
       <v-img
         class="align-end text-white"
         height="200"
@@ -43,6 +43,51 @@
       <v-card-text>
         ADHD 검사는 주의력결핍 과잉행동장애를 진단하는 검사입니다. ADHD는
         주의력결핍, 과잉행동, 즉흥성, 감정조절 등의 증상이 있습니다.
+      </v-card-text>
+    </v-card>
+
+    <br />
+
+    <v-card to="/test/depression">
+      <v-img
+        class="align-end text-white"
+        height="200"
+        src="https://cdn.mkhealth.co.kr/news/photo/202305/64143_68330_5621.jpg"
+        cover
+      >
+        <v-card-title><mark>마인즈 우울증 검사</mark></v-card-title>
+      </v-img>
+
+      <v-card-subtitle class="pt-4">
+        우울증 검사
+      </v-card-subtitle>
+
+      <v-card-text>
+        우울증 검사는 우울증을 진단하는 검사입니다. 우울증은 일상생활에
+        지장을 주는 정신질환으로, 우울감, 피로감, 무기력감, 자살충동 등의
+        증상이 있습니다.
+      </v-card-text>
+    </v-card>
+
+    <br />
+
+    <v-card to="/test/anxiety">
+      <v-img
+        class="align-end text-white"
+        height="200"
+        src="https://www.usatoday.com/gcdn/presto/2023/05/14/USAT/3f7ed7ac-d861-46f4-84ac-ef0da7002666-anxiety.jpg?crop=1923,1081,x3,y941&width=1923&height=1081&format=pjpg&auto=webp"
+        cover
+      >
+        <v-card-title><mark>마인즈 불안 검사</mark></v-card-title>
+      </v-img>
+
+      <v-card-subtitle class="pt-4">
+        불안 검사
+      </v-card-subtitle>
+
+      <v-card-text>
+        불안 검사는 불안장애를 진단하는 검사입니다. 불안장애는 불안감,
+        긴장감, 공포감, 불안장애 등의 증상이 있습니다.
       </v-card-text>
     </v-card>
   </div>
