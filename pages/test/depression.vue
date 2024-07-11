@@ -19,9 +19,10 @@
       </div>
     </v-card>
 
-    <!-- Submit Button -->
-    <div class="text-center my-4">
-      <v-btn block color="primary" @click="submitAnswers">결과 보기</v-btn>
+    <br /><br />
+
+    <div class="d-flex">
+      <v-btn block variant="outlined" color="primary" @click="submitAnswers">결과 보기</v-btn>
     </div>
   </div>
 </template>

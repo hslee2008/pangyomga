@@ -47,7 +47,7 @@
     <v-fab
       v-if="userInfo"
       location="bottom end"
-      size="50"
+      size="60"
       color="#FFEAE4"
       absolute
       app

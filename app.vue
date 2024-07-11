@@ -1,5 +1,6 @@
 <template>
-  <NuxtLoadingIndicator />
+  <VitePwaManifest />
+  <NuxtLoadingIndicator color="linear-gradient(to right, #ffeae3 0%, #db1306 100%)" />
 
   <v-app>
     <NuxtLayout>
