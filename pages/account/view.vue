@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="profile-container mx-auto p-4 bg-white rounded-lg shadow-lg max-w-md"
-  >
+  <div class="profile-container bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
     <div class="flex items-center mb-4">
       <img
         :src="targetUser.photoURL"
@@ -9,22 +7,10 @@
         class="rounded-full h-16 w-16 mr-4"
       />
       <div>
-        <h2 class="font-bold text-lg">{{ targetUser.displayName }}</h2>
+        <h2 class="font-bold text-xl text-gray-900">{{ targetUser.displayName }}</h2>
         <p class="text-gray-600">{{ targetUser.status }}</p>
-        <p>{{ targetUser.explanation }}</p>
+        <p class="text-gray-800">{{ targetUser.explanation }}</p>
       </div>
-    </div>
-
-    <div v-if="userInfo.uid !== uid">
-      <v-btn
-        @click="addFriend"
-        variant="outlined"
-        color="primary"
-        width="calc(100% - 33px)"
-        class="mx-4 mt-3"
-      >
-        친구 추가
-      </v-btn>
     </div>
   </div>
 </template>
@@ -64,26 +50,30 @@ onMounted(() => {
 
 <style>
 .profile-container {
-  margin-top: 20px;
-  padding: 20px;
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  max-width: 28rem;
+  margin: 1.5rem auto;
 }
 
 .profile-container img {
   border-radius: 50%;
+  height: 4rem;
+  width: 4rem;
+  margin-right: 1rem;
 }
 
 .profile-container h2 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
 }
 
 .profile-container p {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .profile-container .text-gray-600 {

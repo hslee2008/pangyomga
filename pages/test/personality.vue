@@ -153,7 +153,7 @@ function result() {
   ).length;
 
   router.push(
-    `./result/?elasticity=${elasticity_score}&excited=${excited_score}&myway=${myway_score}&onestep=${onestep_score}`
+    `./results/personality/?elasticity=${elasticity_score}&excited=${excited_score}&myway=${myway_score}&onestep=${onestep_score}`
   );
 }
 </script>

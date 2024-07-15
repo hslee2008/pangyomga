@@ -61,7 +61,7 @@ const router = useRouter()
 
 const submitAnswers = () => {
   const score = answers.value.filter(answer => answer === 'true').length
-  alert(score)
+  router.push(`/test/results/depression?score=${score}`)
 }
 </script>
 

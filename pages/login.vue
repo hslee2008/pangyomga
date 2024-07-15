@@ -3,7 +3,7 @@
     <h1 class="my-3 text-center">로그인하기</h1>
 
     <v-btn variant="outlined" block @click="login">
-      <v-icon>mdi-google</v-icon> 구글로 로그인
+      <v-icon start>mdi-google</v-icon> 구글로 로그인
     </v-btn>
   </div>
 </template>

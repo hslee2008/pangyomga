@@ -1,7 +1,5 @@
 <template>
   <div style="width: 100%" class="mx-4">
-    <h1 class="mx-3 mt-5">{{ content?.title }}</h1>
-
     <div class="my-3">
       <v-card v-if="content?.anonymous" elevation="0">
         <v-card-subtitle>
@@ -17,6 +15,8 @@
         </template>
       </v-card>
     </div>
+
+    <h1 class="mx-3 mt-5">{{ content?.title }}</h1>
 
     <p class="mx-3 text-justify">{{ content?.content }}</p>
 
@@ -47,7 +47,11 @@
         append-icon="mdi-send"
         @click:append="send"
       ></v-textarea>
-      <v-checkbox v-model="anonymous" label="비공개로 댓글 달기" style="margin-bottom: -20px;"></v-checkbox>
+      <v-checkbox
+        v-model="anonymous"
+        label="비공개로 댓글 달기"
+        style="margin-bottom: -20px"
+      ></v-checkbox>
     </div>
 
     <br /><br />
@@ -77,6 +81,18 @@
         </v-card-text>
       </v-card>
     </div>
+
+    <v-fab
+      v-if="userInfo?.uid === content?.userInfo?.uid"
+      location="bottom end"
+      size="35"
+      color="#FFEAE4"
+      absolute
+      app
+      appear
+      icon="mdi-delete"
+      @click="delete_content"
+    ></v-fab>
   </div>
 </template>
 
@@ -84,9 +100,11 @@
 import { ref as dbRef, onValue, set, remove } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 
+const router = useRouter();
 const route = useRoute();
 const variety = route.query.variety;
 const time = route.query.time;
+
 const content = ref({});
 const userInfo = ref({});
 const comments = ref([]);
@@ -163,6 +181,12 @@ function send() {
     },
   });
   comment.value = "";
+}
+
+function delete_content() {
+  const db = dbRef($db, `/community/share-emotion/${variety}/${time}`);
+  remove(db);
+  router.push("/community");
 }
 </script>
 
