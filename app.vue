@@ -1,6 +1,8 @@
 <template>
   <VitePwaManifest />
-  <NuxtLoadingIndicator color="linear-gradient(to right, #ffeae3 0%, #db1306 100%)" />
+  <NuxtLoadingIndicator
+    color="linear-gradient(to right, #ffeae3 0%, #db1306 100%)"
+  />
 
   <v-app>
     <NuxtLayout>
@@ -15,6 +17,8 @@
         </NuxtLink>
 
         <template v-slot:append>
+          <v-btn v-if="userInfo" to="/account" icon="mdi-account"></v-btn>
+          <v-btn v-else to="/login" icon="mdi-account"></v-btn>
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         </template>
       </v-app-bar>
@@ -91,21 +95,6 @@
           to="/wee"
           title="WEE 센터"
           prepend-icon="mdi-hospital-building"
-        ></v-list-item>
-
-        <v-divider class="my-3"></v-divider>
-
-        <v-list-item
-          v-if="userInfo"
-          to="/account"
-          title="나의 활동"
-          prepend-icon="mdi-account"
-        ></v-list-item>
-        <v-list-item
-          v-else
-          to="/login"
-          title="로그인하기"
-          prepend-icon="mdi-account"
         ></v-list-item>
       </v-navigation-drawer>
 

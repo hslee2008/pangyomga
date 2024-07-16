@@ -1,47 +1,54 @@
 <template>
-  <div style="width: 100%" class="mx-4">
-    <div class="section d-flex justify-center align-center">
-      <div class="text-center">
-        <v-slide-y-transition v-show="home1">
-          <v-img
-            src="/mga.png"
-            width="100"
-            class="ma-auto mb-2 mb-3"
-            :class="{ 'heart-logo': isHeartBeating }"
-            @click="toggleHeartBeat"
-          ></v-img>
-        </v-slide-y-transition>
-        <v-slide-y-transition v-show="home2">
+  <div style="width: 100%">
+    <v-parallax
+      src="https://cdn.pixabay.com/photo/2023/02/01/21/40/pink-7761356_1280.png"
+      style="height: calc(100vh - 60px)"
+    >
+      <div class="section d-flex justify-center align-center">
+        <v-card variant="tonal" class="text-center pa-4">
+          <v-avatar size="100" class="mb-3">
+            <v-img
+              src="/mga.png"
+              width="100"
+              class="ma-auto mb-2 mb-3"
+              :class="{ 'heart-logo': isHeartBeating }"
+              @click="toggleHeartBeat"
+            ></v-img>
+          </v-avatar>
+
           <div>
             <h1 class="hero-title">마인즈</h1>
             <p class="hero-subtitle">판교고 학생들을 위한 맞춤형 서비스</p>
           </div>
-        </v-slide-y-transition>
+        </v-card>
       </div>
-    </div>
+    </v-parallax>
 
     <br /><br /><br />
 
-    <div ref="target" class="section">
+    <div class="section">
       <h1 class="text-center mb-5 section-title">마인즈</h1>
-      <v-slide-x-transition>
-        <v-card v-show="targetIsVisible" class="custom-card">
-          <v-card-title>감정 나누기</v-card-title>
-          <v-card-subtitle class="custom-subtitle">
-            {{ share_emotion }}개
-          </v-card-subtitle>
-          <v-card-text>
-            자신의 고민을 전문가 및 또래 친구들과 온라인으로 상담합니다.
-          </v-card-text>
-        </v-card>
-      </v-slide-x-transition>
+
+      <v-card
+        max-width="340px"
+        class="custom-card"
+        to="/community/share-emotion"
+      >
+        <v-card-title>감정 나누기</v-card-title>
+        <v-card-subtitle class="custom-subtitle">
+          {{ share_emotion }}개
+        </v-card-subtitle>
+        <v-card-text>
+          자신의 고민을 전문가 및 또래 친구들과 온라인으로 상담합니다.
+        </v-card-text>
+      </v-card>
     </div>
 
-    <div v-if="userInfo" ref="target2" class="section">
+    <div v-if="userInfo" class="section">
       <h1 class="text-center mb-5 section-title">나의 활동</h1>
 
-      <v-slide-x-transition v-if="userInfo?.adhd?.score">
-        <v-card v-show="targetIsVisible2" class="custom-card">
+      <div v-if="userInfo?.adhd?.score">
+        <v-card max-width="340px" class="custom-card">
           <v-card-title>ADHD 검사</v-card-title>
           <v-card-subtitle class="custom-subtitle">
             {{ userInfo?.adhd?.score }}점
@@ -50,9 +57,9 @@
             자신의 ADHD 점수를 확인하고, 전문가와 상담을 받아보세요.
           </v-card-text>
         </v-card>
-      </v-slide-x-transition>
+      </div>
       <div v-else>
-        <v-card class="custom-card" to="/test/adhd">
+        <v-card max-width="340px" class="custom-card" to="/test/adhd">
           <v-card-title>ADHD 검사</v-card-title>
           <v-card-subtitle class="custom-subtitle">미응시</v-card-subtitle>
           <v-card-text>
@@ -62,24 +69,47 @@
       </div>
 
       <br />
-      
-      <v-slide-x-transition v-if="userInfo?.personality">
-        <v-card v-show="targetIsVisible2" class="custom-card">
-          <v-card-title>ADHD 검사</v-card-title>
+
+      <div v-if="userInfo?.personality">
+        <v-card max-width="340px" class="custom-card">
+          <v-card-title>성격 검사</v-card-title>
           <v-card-text class="custom-subtitle">
-            {{ userInfo?.personality.join(", ") }}
+            {{ userInfo?.personality?.join(", ") }}
           </v-card-text>
           <v-card-text>
-            자신의 성격을 확인하고, 전문가와 상담을 받아보세요.
+            자신의 성격 유형을 확인하고, 전문가와 상담을 받아보세요.
           </v-card-text>
         </v-card>
-      </v-slide-x-transition>
+      </div>
       <div v-else>
-        <v-card class="custom-card" to="/test/adhd">
-          <v-card-title>ADHD 검사</v-card-title>
+        <v-card max-width="340px" class="custom-card" to="/test/personality">
+          <v-card-title>성격 검사</v-card-title>
           <v-card-subtitle class="custom-subtitle">미응시</v-card-subtitle>
           <v-card-text>
-            자신의 ADHD 점수를 확인하고, 전문가와 상담을 받아보세요.
+            자신의 성격 유형을 확인하고, 전문가와 상담을 받아보세요.
+          </v-card-text>
+        </v-card>
+      </div>
+
+      <br />
+
+      <div v-if="userInfo?.depression?.score">
+        <v-card max-width="340px" class="custom-card">
+          <v-card-title>우을증 검사</v-card-title>
+          <v-card-text class="custom-subtitle">
+            {{ userInfo?.depression?.score }}점
+          </v-card-text>
+          <v-card-text>
+            자신의 우울증 점수를 확인하고, 전문가와 상담을 받아보세요.
+          </v-card-text>
+        </v-card>
+      </div>
+      <div v-else>
+        <v-card max-width="340px" class="custom-card" to="/test/depression">
+          <v-card-title>우을증 검사</v-card-title>
+          <v-card-subtitle class="custom-subtitle">미응시</v-card-subtitle>
+          <v-card-text>
+            자신의 우울증 점수를 확인하고, 전문가와 상담을 받아보세요.
           </v-card-text>
         </v-card>
       </div>
@@ -88,14 +118,8 @@
 </template>
 
 <script setup>
-import { useIntersectionObserver } from "@vueuse/core";
 import { ref as dbRef, onValue } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
-
-const target = ref(null);
-const target2 = ref(null);
-const targetIsVisible = ref(false);
-const targetIsVisible2 = ref(false);
 
 const userInfo = ref(null);
 
@@ -111,19 +135,6 @@ const isHeartBeating = ref(true);
 const toggleHeartBeat = () => {
   isHeartBeating.value = !isHeartBeating.value;
 };
-
-const { stop } = useIntersectionObserver(
-  target,
-  ([{ isIntersecting }], observerElement) => {
-    setTimeout(() => (targetIsVisible.value = isIntersecting), 500);
-  }
-);
-const { stop: stop2 } = useIntersectionObserver(
-  target2,
-  ([{ isIntersecting }], observerElement) => {
-    setTimeout(() => (targetIsVisible2.value = isIntersecting), 500);
-  }
-);
 
 onMounted(() => {
   const db = dbRef($db, "community/share-emotion/number");
@@ -170,7 +181,6 @@ html {
 
 .hero-subtitle {
   font-size: 1.25rem;
-  color: #757575;
 }
 
 .custom-card {

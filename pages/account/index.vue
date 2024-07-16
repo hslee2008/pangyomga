@@ -70,7 +70,7 @@
           <v-icon end size="small">mdi-open-in-new</v-icon>
         </NuxtLink>
       </div>
-      <v-card class="py-3" variant="outlined">
+      <v-card class="py-3" elevation="0">
         <v-text-field
           label="상태"
           v-model="status"

@@ -313,7 +313,7 @@
 </template>
 
 <script setup>
-import { ref as dbRef, set, onValue } from "firebase/database";
+import { ref as dbRef, set } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 
 const { $auth, $db } = useNuxtApp();
