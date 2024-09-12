@@ -2,7 +2,7 @@
   <div>
     <div style="display: flex; justify-content: center">
       <div style="max-width: 650px" class="text-justify mx-4">
-        <div style="border: 3px solid black" class="pa-3 rounded-lg">
+        <div style="border: 3px solid black" class="pa-3 rounded-lg mt-4">
           <p>
             다음은 <b class="text-decoration-underline">학생 여러분</b>의 최근
             상태를 묻는 설문입니다. 이 검사에는 옳거나 그른 답이 없으므로 자신의
@@ -24,6 +24,26 @@
         <br />
 
         <v-table>
+          <tr>
+            <th>학번</th>
+            <td>
+              <v-text-field
+                v-model="studentId"
+                placeholder="학번을 입력해주세요"
+                variant="plain"
+              ></v-text-field>
+            </td>
+          </tr>
+          <tr>
+            <th>이름</th>
+            <td>
+              <v-text-field
+                v-model="name"
+                placeholder="이름을 입력해주세요"
+                variant="plain"
+              ></v-text-field>
+            </td>
+          </tr>
           <tr>
             <th>성별</th>
             <td>
@@ -55,18 +75,85 @@
 
         <br />
 
-        <v-btn color="primary" block @click="submit" :disabled="
-          Object.values(question).some(({ answer }) => answer === null)
-        ">제출</v-btn>
+        <v-btn
+          color="primary"
+          block
+          @click="submit"
+          :disabled="
+            Object.values(question).some(({ answer }) => answer === null) ||
+            !studentId ||
+            !name
+          "
+        >
+          제출
+        </v-btn>
       </div>
     </div>
+
+    <v-dialog v-model="taa" fullscreen>
+      <v-card>
+        <v-card-title class="mt-3 text-center">안내</v-card-title>
+
+        <div
+          class="text-justify ma-13 pa-6 rounded-lg"
+          style="border: 1px solid black"
+        >
+          - 해당 검사는 학교 현장에서 학생들의 마음건강 지원 강화를 위해서
+          실시하는 검사이며, 검사 후 전문기관 연계 등에 해당 검사결과를 활용할
+          수 있습니다.<br /><br />
+          - 본 검사는 학교가 학기 초에
+          <a
+            href="https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%ED%95%99%EA%B5%90%EB%B3%B4%EA%B1%B4%EB%B2%95"
+            >학교보건법 제7조 제6항</a
+          >에 대해 학생 및 보호자(학부모)로부터 동의받은 개인정보 이용·수집과
+          관련하여 실시하는 검사입니다.<br /><br />
+          - 검사결과는 학교생활기록부 또는 건강기록부에 일절 기재되지 않으며,
+          시스템 상에서 일괄 폐기됩니다.<br /><br />
+          - 무단으로 다른 사람의 검사에 참여하는 경우, 법적 제재를 받을 수
+          있습니다.<br /><br />
+
+          <hr />
+          <br />
+
+          - 입력한 학번, 이름과 검사결과는 관리자(선생님과 본인)와 개발자만
+          확인할 수 있습니다.<br /><br />
+
+          <v-checkbox
+            v-model="agreed"
+            label="나는 안내를 다 읽었고 이에 동의한다."
+          ></v-checkbox>
+
+          <v-btn :disabled="!agreed" @click="taa = false" variant="tonal" block>
+            시작하기
+          </v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <v-overlay v-model="loading" class="align-center justify-center">
+      <v-progress-circular
+        color="primary"
+        size="64"
+        width="7"
+        indeterminate
+      ></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 
 <script setup>
+import { ref as dbRef, onValue, set } from "firebase/database";
+
 const router = useRouter();
 
+const { $db } = useNuxtApp();
+
 const gender = ref(null);
+const taa = ref(true);
+const agreed = ref(false);
+const loading = ref(false);
+const studentId = ref("");
+const name = ref("");
 const types = ref([
   "불안 및 우울 문제",
   "자살 및 위기 문제",
@@ -123,7 +210,7 @@ const question = ref({
   10: {
     question: "늦게 자서 아침에 일어나기 어렵다.",
     answer: null,
-    type: "학교 생활 적응 문제",
+    type: "학교생활적응 문제",
   },
   11: {
     question: "살고 싶지 않다는 생각이 자주 든다.",
@@ -219,17 +306,17 @@ const question = ref({
   28: {
     question: "적응력이나 대처 능력이 또래에 비해 떨어진다.",
     answer: null,
-    type: "학교 생활 적응 문제",
+    type: "학교생활적응 문제",
   },
   29: {
     question: "집에서 멀리 떨어져 자는 것이 두렵다(수학여행, 캠프 등)",
     answer: null,
-    type: "학교 생활 적응 문제",
+    type: "학교생활적응 문제",
   },
   30: {
     question: "수업 내용을 대부분 이해하기 어렵다.",
     answer: null,
-    type: "학교 생활 적응 문제",
+    type: "학교생활적응 문제",
   },
   31: {
     question: "다른 사람의 물건을 부수거나 훔친 적이 있다.",
@@ -244,12 +331,12 @@ const question = ref({
   33: {
     question: "친구를 사귀거나 친밀한 관계를 유지하는 것이 어렵다.",
     answer: null,
-    type: "학교 생활 적응 문제",
+    type: "학교생활적응 문제",
   },
   34: {
     question: "학교에 가는 것이 두렵다.",
     answer: null,
-    type: "학교 생활 적응 문제",
+    type: "학교생활적응 문제",
   },
   35: {
     question:
@@ -264,7 +351,36 @@ const question = ref({
   },
 });
 
+const test = () => {
+  for (const key in question.value) {
+    question.value[key].answer = 3;
+  }
+};
+
+const saveToDatabase = (parsedDate, totalScore, link, scores) => {
+  const data = {
+    studentId: studentId.value,
+    name: name.value,
+    parsedDate,
+    totalScore,
+    link,
+    scores,
+  };
+  // 10822
+  const grade = data.studentId.slice(0, 1);
+  const classNumber = data.studentId.slice(1, 3);
+  const studentNumber = data.studentId.slice(3, 5);
+
+  const db = dbRef(
+    $db,
+    `easy/students/${grade}/${classNumber}/${studentNumber}`
+  );
+  set(db, data);
+};
+
 const submit = () => {
+  loading.value = true;
+
   // scores for each type
   const scores = types.value.reduce((acc, type) => {
     acc[type] = 0;
@@ -287,13 +403,27 @@ const submit = () => {
   const parsedDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const link = `/test/easy/result?gender=${
+    gender.value
+  }&totalScore=${totalScore}&scores=${JSON.stringify(
+    scores
+  )}&date=${parsedDate}&studentId=${studentId.value}&name=${name.value}`;
 
-  router.push(
-    `/test/easy/result?gender=${gender.value}&totalScore=${totalScore}&scores=${JSON.stringify(
-      scores
-    )}&date=${parsedDate}`
-  );
+  saveToDatabase(parsedDate, totalScore, link, scores);
+
+  router.push(link);
 };
+
+onMounted(() => {
+  if (process.env.NODE_ENV === "development") {
+    studentId.value = "10822";
+    name.value = "이현승";
+    taa.value = false;
+    agreed.value = true;
+    gender.value = "boy";
+    test();
+  }
+});
 </script>
 
 <style scoped>

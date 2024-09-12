@@ -1,11 +1,39 @@
 <template>
   <div style="width: 100%" class="mx-7">
-    <h1 class="text-center">마음EASY 선별 검사(중등학교용)</h1>
+    <v-card variant="tonal" class="mt-5">
+      <h1 class="text-center mt-2">마음EASY 선별 검사</h1>
+
+      <br />
+
+      <div class="d-flex justify-center mb-5 ga-3">
+        <v-btn variant="tonal" @click="share"
+          ><v-icon>mdi-share-variant</v-icon> 공유하기</v-btn
+        >
+        <v-btn variant="tonal" @click="saveAsPdf"
+          ><v-icon>mdi-download</v-icon> 저장하기</v-btn
+        >
+      </div>
+    </v-card>
 
     <br />
 
-    <div>
+    <div id="main">
       <v-card-title>학생 기본 정보</v-card-title>
+
+      <table class="header-table mb-2">
+        <thead>
+          <tr>
+            <th>학번</th>
+            <th>이름</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ studentId }}</td>
+            <td>{{ name }}</td>
+          </tr>
+        </tbody>
+      </table>
 
       <table class="header-table">
         <thead>
@@ -275,15 +303,16 @@
 
 <script setup>
 import { onMounted } from "vue";
+import { jsPDF } from "jspdf";
 import Plotly from "plotly.js-dist-min";
 
 const route = useRoute();
-const { gender, totalScore, scores, date } = route.query;
+const { gender, totalScore, scores, date, studentId, name } = route.query;
 
 const reading = {
   종합점수: {
     일반군:
-      "전반적인 마음건강과 관련한, 혹은 기준 점수에 해당하는 하위요인과 관련된 심각한 문제가 나타나지 않는다. 일상생활 및 학교 생활에 대체로 잘 적응하고 있고, 일상에서 나타날 수 있는 문제들과 어려움에 적절히 대처할 수 있다.",
+      "전반적인 마음건강과 관련한, 혹은 기준 점수에 해당하는 하위요인과 관련된 심각한 문제가 나타나지 않는다. 일상생활 및 학교생활에 대체로 잘 적응하고 있고, 일상에서 나타날 수 있는 문제들과 어려움에 적절히 대처할 수 있다.",
     관심군:
       "전반적인 마음건강과 관련한, 혹은 기준 점수에 해당하는 하위요인과 관련된 심리적 문제가 나타날 가능성이 있다. 검사 대상자가 관심군에 속할 경우, 일상에서 나타날 수 있는 문제들에 대해 적절히 대처하지 못할 수 있다. 관심군 대상에게 지속적인 관심을 가지고 상태를 점검할 필요가 있다.",
     우선관심군:
@@ -381,18 +410,26 @@ function getCategoryByTotalScore(gender, totalScore) {
   return null; // If no matching range is found
 }
 
-function calculateTScore(rawScore) {
-  // Calculate T-score
-  const tScore = (rawScore - 50) / 10;
-  const minTScore = -3; // Example minimum T-score
-  const maxTScore = 3; // Example maximum T-score
+function share() {
+  navigator.share({
+    title: "마음EASY 선별 검사 결과",
+    text: "마음EASY 선별 검사 결과",
+    link: window.location.href,
+  });
+}
 
-  // Normalize the T-score to a 0-1 scale
-  const normalizedScore = (tScore - minTScore) / (maxTScore - minTScore);
-
-  // Convert to a 0-100 scale
-  const scaleScore = normalizedScore * 100;
-  return Math.round(scaleScore * 100) / 100 + 33.33;
+function saveAsPdf() {
+  const doc = new jsPDF();
+  const source = window.document.getElementById("main");
+  doc.html(source, {
+    callback: function (doc) {
+      doc.save("마음EASY 선별 검사 결과지.pdf");
+    },
+    x: 10,
+    y: 10,
+    width: 180,
+    
+  });
 }
 
 onMounted(() => {
