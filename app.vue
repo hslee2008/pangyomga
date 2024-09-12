@@ -93,7 +93,7 @@
         </v-list-item>
         <v-list-item
           to="/wee"
-          title="WEE 센터"
+          title="Wee 클래스"
           prepend-icon="mdi-hospital-building"
         ></v-list-item>
       </v-navigation-drawer>
@@ -115,10 +115,12 @@
           background-color: #ffeae4;
         "
       >
-        <div>
-          {{ new Date().getFullYear() }} —
-          <strong>심장박동 x 코딩인싸이트</strong>
-        </div>
+        <NuxtLink to="/thanks" style="color: black; text-decoration: none;">
+          <div>
+            {{ new Date().getFullYear() }} —
+            <strong>심장박동 x 코딩인싸이트</strong>
+          </div>
+        </NuxtLink>
       </v-footer>
     </NuxtLayout>
   </v-app>
