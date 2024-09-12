@@ -8,7 +8,7 @@
       <v-otp-input v-model="otp"></v-otp-input>
     </div>
     <div v-else>
-      <div v-for="(item, 학년) in data" :key="학년" style="width: 400px">
+      <div v-for="(item, 학년) in data" :key="학년" style="width: auto; max-width: 400px">
         <h2>{{ 학년 + 1 }} 학년</h2>
         <div>
           <v-expansion-panels>
@@ -42,7 +42,7 @@
                       <template v-slot:default>
                         <tr v-for="(item4, index) in item3.scores" :key="index">
                           <td>{{ index }}</td>
-                          <td>{{ item4 }}점</td>
+                          <td class="pl-4">{{ item4 }}점</td>
                         </tr>
                       </template>
                     </v-table>
