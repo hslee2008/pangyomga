@@ -1,19 +1,21 @@
 <template>
-  <div style="width: 100%" class="mx-7">
-    <v-card variant="tonal" class="mt-5">
-      <h1 class="text-center mt-2">마음EASY 선별 검사</h1>
+  <div class="mx-7">
+    <div class="d-flex justify-center">
+      <v-card variant="tonal" class="mt-5">
+        <h1 class="text-center mt-3 mx-4">마음EASY 선별 검사</h1>
 
-      <br />
+        <br />
 
-      <div class="d-flex justify-center mb-5 ga-3">
-        <v-btn variant="tonal" @click="share"
-          ><v-icon>mdi-share-variant</v-icon> 공유하기</v-btn
-        >
-        <v-btn variant="tonal" @click="saveAsPdf"
-          ><v-icon>mdi-download</v-icon> 저장하기</v-btn
-        >
-      </div>
-    </v-card>
+        <div class="d-flex justify-center mb-5 ga-3">
+          <v-btn variant="tonal" @click="share"
+            ><v-icon>mdi-share-variant</v-icon> 공유하기</v-btn
+          >
+          <v-btn variant="tonal" @click="saveAsPdf"
+            ><v-icon>mdi-download</v-icon> 저장하기</v-btn
+          >
+        </div>
+      </v-card>
+    </div>
 
     <br />
 
@@ -84,12 +86,14 @@
       </table>
 
       <br />
+      <br />
+      <br />
 
       <v-card-title>하위요인 프로파일</v-card-title>
 
       <div id="myChart"></div>
 
-      <v-table>
+      <v-table class="responsive-table">
         <thead>
           <tr>
             <th>하위요인</th>
@@ -104,9 +108,12 @@
             <td>불안 및 우울 문제</td>
             <td>
               {{
-                getCategoryByTotalScore(
-                  gender,
-                  JSON.parse(scores)["불안 및 우울 문제"]
+                categoryByTScore(
+                  convertScoreToTScore(
+                    "불안 및 우울 문제",
+                    gender,
+                    JSON.parse(scores)["불안 및 우울 문제"]
+                  )
                 )
               }}
             </td>
@@ -128,12 +135,15 @@
                 )
               }}
             </td>
-            <td>
+            <td class="text-justify">
               {{
                 reading["불안 및 우울 문제"][
-                  getCategoryByTotalScore(
-                    gender,
-                    JSON.parse(scores)["불안 및 우울 문제"]
+                  categoryByTScore(
+                    convertScoreToTScore(
+                      "불안 및 우울 문제",
+                      gender,
+                      JSON.parse(scores)["불안 및 우울 문제"]
+                    )
                   )
                 ]
               }}
@@ -143,9 +153,12 @@
             <td>자살 및 위기 문제</td>
             <td>
               {{
-                getCategoryByTotalScore(
-                  gender,
-                  JSON.parse(scores)["자살 및 위기 문제"]
+                categoryByTScore(
+                  convertScoreToTScore(
+                    "자살 및 위기 문제",
+                    gender,
+                    JSON.parse(scores)["자살 및 위기 문제"]
+                  )
                 )
               }}
             </td>
@@ -167,12 +180,15 @@
                 )
               }}
             </td>
-            <td>
+            <td class="text-justify">
               {{
                 reading["자살 및 위기 문제"][
-                  getCategoryByTotalScore(
-                    gender,
-                    JSON.parse(scores)["자살 및 위기 문제"]
+                  categoryByTScore(
+                    convertScoreToTScore(
+                      "자살 및 위기 문제",
+                      gender,
+                      JSON.parse(scores)["자살 및 위기 문제"]
+                    )
                   )
                 ]
               }}
@@ -182,9 +198,12 @@
             <td>외현화 문제</td>
             <td>
               {{
-                getCategoryByTotalScore(
-                  gender,
-                  JSON.parse(scores)["외현화 문제"]
+                categoryByTScore(
+                  convertScoreToTScore(
+                    "외현화 문제",
+                    gender,
+                    JSON.parse(scores)["외현화 문제"]
+                  )
                 )
               }}
             </td>
@@ -206,12 +225,15 @@
                 )
               }}
             </td>
-            <td>
+            <td class="text-justify">
               {{
                 reading["외현화 문제"][
-                  getCategoryByTotalScore(
-                    gender,
-                    JSON.parse(scores)["외현화 문제"]
+                  categoryByTScore(
+                    convertScoreToTScore(
+                      "외현화 문제",
+                      gender,
+                      JSON.parse(scores)["외현화 문제"]
+                    )
                   )
                 ]
               }}
@@ -221,9 +243,12 @@
             <td>심리외상 문제</td>
             <td>
               {{
-                getCategoryByTotalScore(
-                  gender,
-                  JSON.parse(scores)["심리외상 문제"]
+                categoryByTScore(
+                  convertScoreToTScore(
+                    "심리외상 문제",
+                    gender,
+                    JSON.parse(scores)["심리외상 문제"]
+                  )
                 )
               }}
             </td>
@@ -245,12 +270,15 @@
                 )
               }}
             </td>
-            <td>
+            <td class="text-justify">
               {{
                 reading["심리외상 문제"][
-                  getCategoryByTotalScore(
-                    gender,
-                    JSON.parse(scores)["심리외상 문제"]
+                  categoryByTScore(
+                    convertScoreToTScore(
+                      "심리외상 문제",
+                      gender,
+                      JSON.parse(scores)["심리외상 문제"]
+                    )
                   )
                 ]
               }}
@@ -260,9 +288,12 @@
             <td>학교생활적응 문제</td>
             <td>
               {{
-                getCategoryByTotalScore(
-                  gender,
-                  JSON.parse(scores)["학교생활적응 문제"]
+                categoryByTScore(
+                  convertScoreToTScore(
+                    "학교생활적응 문제",
+                    gender,
+                    JSON.parse(scores)["학교생활적응 문제"]
+                  )
                 )
               }}
             </td>
@@ -284,12 +315,15 @@
                 )
               }}
             </td>
-            <td>
+            <td class="text-justify">
               {{
                 reading["학교생활적응 문제"][
-                  getCategoryByTotalScore(
-                    gender,
-                    JSON.parse(scores)["학교생활적응 문제"]
+                  categoryByTScore(
+                    convertScoreToTScore(
+                      "학교생활적응 문제",
+                      gender,
+                      JSON.parse(scores)["학교생활적응 문제"]
+                    )
                   )
                 ]
               }}
@@ -303,7 +337,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { jsPDF } from "jspdf";
+import html2pdf from "html2pdf.js";
 import Plotly from "plotly.js-dist-min";
 
 const route = useRoute();
@@ -367,49 +401,6 @@ const types = ref([
   "학교생활적응 문제",
 ]);
 
-const scoreCategories = {
-  boy: [
-    { min: 0, max: 2, 구분: "일반군" },
-    { min: 3, max: 7, 구분: "일반군" },
-    { min: 8, max: 13, 구분: "일반군" },
-    { min: 14, max: 19, 구분: "일반군" },
-    { min: 20, max: 25, 구분: "일반군" },
-    { min: 26, max: 31, 구분: "일반군" },
-    { min: 32, max: 37, 구분: "관심군" },
-    { min: 38, max: 42, 구분: "우선관심군" },
-    { min: 43, max: 48, 구분: "우선관심군" },
-    { min: 49, max: 54, 구분: "우선관심군" },
-    { min: 55, max: 60, 구분: "우선관심군" },
-    { min: 61, max: 66, 구분: "우선관심군" },
-    { min: 67, max: 108, 구분: "우선관심군" },
-  ],
-  girl: [
-    { min: 0, max: 2, 구분: "일반군" },
-    { min: 3, max: 9, 구분: "일반군" },
-    { min: 10, max: 53, 구분: "일반군" },
-    { min: 16, max: 21, 구분: "일반군" },
-    { min: 22, max: 28, 구분: "일반군" },
-    { min: 29, max: 34, 구분: "일반군" },
-    { min: 35, max: 41, 구분: "관심군" },
-    { min: 42, max: 47, 구분: "우선관심군" },
-    { min: 48, max: 53, 구분: "우선관심군" },
-    { min: 54, max: 60, 구분: "우선관심군" },
-    { min: 61, max: 66, 구분: "우선관심군" },
-    { min: 67, max: 73, 구분: "우선관심군" },
-    { min: 74, max: 108, 구분: "우선관심군" },
-  ],
-};
-
-function getCategoryByTotalScore(gender, totalScore) {
-  const categories = scoreCategories[gender] ?? [];
-  for (const category of categories) {
-    if (totalScore >= category.min && totalScore <= category.max) {
-      return category.구분;
-    }
-  }
-  return null; // If no matching range is found
-}
-
 function share() {
   navigator.share({
     title: "마음EASY 선별 검사 결과",
@@ -428,7 +419,6 @@ function saveAsPdf() {
     x: 10,
     y: 10,
     width: 180,
-    
   });
 }
 

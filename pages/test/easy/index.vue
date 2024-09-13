@@ -1,8 +1,14 @@
 <template>
   <div>
+    <h1 class="text-center">마음EASY 검사</h1>
+
     <div style="display: flex; justify-content: center">
       <div style="max-width: 650px" class="text-justify mx-4">
-        <div style="border: 3px solid black" class="pa-3 rounded-lg mt-4">
+        <div
+          v-if="alerting"
+          style="border: 3px solid black"
+          class="pa-3 rounded-lg mt-4"
+        >
           <p>
             다음은 <b class="text-decoration-underline">학생 여러분</b>의 최근
             상태를 묻는 설문입니다. 이 검사에는 옳거나 그른 답이 없으므로 자신의
@@ -19,45 +25,44 @@
             경우 ➤ 그렇다<br />
             본인에게 거의 항상 또는 전적으로 해당되는 경우 ➤ 매우 그렇다
           </p>
+
+          <div class="mt-3 d-flex justify-center">
+            <v-btn variant="tonal" @click="alerting = false">닫기</v-btn>
+          </div>
         </div>
 
         <br />
 
-        <v-table>
-          <tr>
-            <th>학번</th>
-            <td>
-              <v-text-field
-                v-model="studentId"
-                placeholder="학번을 입력해주세요"
-                variant="plain"
-              ></v-text-field>
-            </td>
-          </tr>
-          <tr>
-            <th>이름</th>
-            <td>
-              <v-text-field
-                v-model="name"
-                placeholder="이름을 입력해주세요"
-                variant="plain"
-              ></v-text-field>
-            </td>
-          </tr>
-          <tr>
-            <th>성별</th>
-            <td>
-              <v-radio-group v-model="gender" class="pt-3">
-                <v-radio label="남" value="boy"></v-radio>
-                <v-radio label="여" value="girl"></v-radio>
-              </v-radio-group>
-            </td>
-          </tr>
-        </v-table>
+        <v-text-field
+          v-model="studentId"
+          placeholder="학번을 입력해주세요"
+          variant="outlined"
+          label="학번"
+          :rules="[
+            (v) => !!v || '학번을 입력해주세요',
+            (v) => /^[0-9]{5}$/.test(v) || '5자리 숫자로 입력해주세요',
+          ]"
+        ></v-text-field>
+        <v-text-field
+          v-model="name"
+          placeholder="이름을 입력해주세요"
+          variant="outlined"
+          label="이름"
+        ></v-text-field>
+
+        <v-label>성별</v-label>
+        <v-radio-group v-model="gender" class="pt-3" inline>
+          <v-radio label="남" value="boy"></v-radio>
+          <v-radio label="여" value="girl"></v-radio>
+        </v-radio-group>
 
         <br />
 
-        <p>지난 3개월 간 나는...</p>
+        <div style="border: 3px solid black" class="pa-3 rounded-lg">
+          <p>지난 3개월간 나는...</p>
+        </div>
+
+        <br />
 
         <v-table>
           <tr v-for="(value, key) in question" :key="key">
@@ -95,7 +100,7 @@
         <v-card-title class="mt-3 text-center">안내</v-card-title>
 
         <div
-          class="text-justify ma-13 pa-6 rounded-lg"
+          class="text-justify ma-5 pa-6 rounded-lg"
           style="border: 1px solid black"
         >
           - 해당 검사는 학교 현장에서 학생들의 마음건강 지원 강화를 위해서
@@ -107,8 +112,7 @@
             >학교보건법 제7조 제6항</a
           >에 대해 학생 및 보호자(학부모)로부터 동의받은 개인정보 이용·수집과
           관련하여 실시하는 검사입니다.<br /><br />
-          - 검사결과는 학교생활기록부 또는 건강기록부에 일절 기재되지 않으며,
-          시스템 상에서 일괄 폐기됩니다.<br /><br />
+          - 검사결과는 학교생활기록부 또는 건강기록부에 일절 기재되지 않습니다.<br /><br />
           - 무단으로 다른 사람의 검사에 참여하는 경우, 법적 제재를 받을 수
           있습니다.<br /><br />
 
@@ -120,7 +124,7 @@
 
           <v-checkbox
             v-model="agreed"
-            label="나는 안내를 다 읽었고 이에 동의한다."
+            label="나는 안내를 다 읽었고 이에 동의합니다."
           ></v-checkbox>
 
           <v-btn :disabled="!agreed" @click="taa = false" variant="tonal" block>
@@ -154,6 +158,7 @@ const agreed = ref(false);
 const loading = ref(false);
 const studentId = ref("");
 const name = ref("");
+const alerting = ref(true);
 const types = ref([
   "불안 및 우울 문제",
   "자살 및 위기 문제",
@@ -193,7 +198,7 @@ const question = ref({
     type: "불안 및 우울 문제",
   },
   7: {
-    question: "괜한 걱적을 미리한다.",
+    question: "괜한 걱정을 미리한다.",
     answer: null,
     type: "불안 및 우울 문제",
   },
@@ -435,14 +440,5 @@ onMounted(() => {
 .v-table th {
   width: 50%;
   padding: 10px;
-  border: 1px solid black;
-}
-
-.v-table td {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: 10px;
-  border: 1px solid black;
 }
 </style>

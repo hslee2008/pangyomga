@@ -99,7 +99,7 @@
       </v-navigation-drawer>
 
       <v-main>
-        <div class="d-flex justify-center">
+        <div :class="`${route.path !== '/test/easy/admin' ?? 'd-flex justify-center'}`">
           <NuxtPage />
         </div>
 

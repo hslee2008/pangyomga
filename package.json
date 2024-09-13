@@ -14,6 +14,7 @@
     "@vueuse/core": "^10.11.0",
     "chartjs": "^0.3.24",
     "firebase": "^10.12.3",
+    "html2pdf.js": "^0.10.2",
     "jspdf": "^2.5.1",
     "nuxt": "^3.12.3",
     "plotly.js-dist-min": "^2.35.0",
