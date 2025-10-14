@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-3 page-wrap">
+  <div class="mx-5" id="page-wrap">
     <div>
       <br /><br />
 
@@ -20,8 +20,15 @@
         <v-btn variant="tonal" @click="share"
           ><v-icon start>mdi-share-variant</v-icon> 공유하기</v-btn
         >
-        <v-btn variant="tonal" class="export-btn" :disabled="isBusy" @click="exportPDF">
-          <v-icon start>mdi-file-pdf</v-icon> {{ isBusy ? "다운로드 중..." : "다운로드" }}
+        <v-btn
+          variant="tonal"
+          class="export-btn"
+          :disabled="isBusy"
+          :loading="isBusy"
+          @click="exportToPDF"
+        >
+          <v-icon start>mdi-file-pdf</v-icon>
+          저장하기
         </v-btn>
       </div>
     </div>
@@ -213,60 +220,9 @@
 <script setup>
 import { onMounted } from "vue";
 import Plotly from "plotly.js-dist-min";
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
+import html2pdf from "html2pdf.js";
 
-const pdfArea = ref(null)
-const isBusy = ref(false)
-
-const exportPDF = async () => {
-  if (!pdfArea.value || isBusy.value) return
-  isBusy.value = true
-  try {
-    // ensure layout is fully rendered
-    await nextTick()
-
-    // High-DPI canvas for sharper text/images
-    const canvas = await html2canvas(pdfArea.value, {
-      scale: 2,            // increase for sharper PDF (2~3)
-      useCORS: true,       // allow cross-origin images (needs proper headers)
-      backgroundColor: '#ffffff'
-    })
-
-    const imgData = canvas.toDataURL('image/png')
-
-    // Create A4 portrait PDF in mm
-    const pdf = new jsPDF('p', 'mm', 'a4')
-    const pdfW = pdf.internal.pageSize.getWidth()
-    const pdfH = pdf.internal.pageSize.getHeight()
-
-    // Fit image to page width, keep aspect
-    const imgW = pdfW
-    const imgH = (canvas.height * imgW) / canvas.width
-
-    // Add first page
-    let heightLeft = imgH
-    let position = 0
-    pdf.addImage(imgData, 'PNG', 0, position, imgW, imgH)
-    heightLeft -= pdfH
-
-    // Add extra pages as needed by shifting the same image up
-    while (heightLeft > 1) {
-      position = heightLeft - imgH // negative offset
-      pdf.addPage()
-      pdf.addImage(imgData, 'PNG', 0, position, imgW, imgH)
-      heightLeft -= pdfH
-    }
-    
-    pdf.save('export.pdf')
-  } catch (e) {
-    console.error(e)
-    alert('Failed to export PDF.')
-  } finally {
-    isBusy.value = false
-  }
-}
-
+const isBusy = ref(false);
 const route = useRoute();
 const encodedData = route.query.data;
 const { gender, totalScore, scores, date, studentGrade } = JSON.parse(
@@ -345,6 +301,16 @@ function share() {
     link: window.location.href,
   });
 }
+
+const exportToPDF = () => {
+  isBusy.value = true;
+  html2pdf(document.getElementById("page-wrap"), {
+    margin: 1,
+    filename: "generated-pdf.pdf",
+  }).then(() => {
+    isBusy.value = false;
+  });
+};
 
 function copylink() {
   navigator.clipboard
