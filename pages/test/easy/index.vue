@@ -21,7 +21,7 @@
             다음은 <b class="text-decoration-underline">학생 여러분</b>의 최근
             상태를 묻는 설문입니다. 이 검사에는 옳거나 그른 답이 없으므로 자신의
             의견을 있는 그대로 솔직하게 응답하면 됩니다. 다음 각 문항을 읽고,
-            주로 <b class="text-decoration-underline">최근 3개월간</b> 자신의
+            주로 <b class="text-decoration-underline text-red">최근 3개월간</b> 자신의
             모습에 해당돤다고 생각하는 곳을 선택해주세요.
           </p>
           <br />
@@ -132,9 +132,9 @@
           - 365일 24시간 언제, 어디서나 검사 가능한 교내 마인즈앱 지원시스템
           구축으로 판교고 학생 마음건강 예방 및 관리 강화의 목적이 있습니다.
           <br /><br />
-          - 본 검사는 학년과 성별, 검사 결과 데이터만 저장되기에 개인정보 식별이
-          불가합니다<br /><br />
-          - 검사 결과는 자신만 볼 수 있습니다.<br /><br />
+          <span class="text-red">- 본 검사는 학년과 성별, 검사 결과 데이터만 저장되기에 개인정보 식별이
+          불가합니다.</span><br /><br />
+          <span class="text-red">- 검사 결과는 자신만 볼 수 있습니다.</span><br /><br />
 
           <v-checkbox
             v-model="agreed"

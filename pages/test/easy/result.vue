@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-3">
+  <div class="mx-3 page-wrap">
     <div>
       <br /><br />
 
@@ -17,14 +17,12 @@
         <v-btn variant="tonal" @click="copylink"
           ><v-icon start>mdi-link</v-icon> 링크 복사</v-btn
         >
-        <v-btn color="primary" variant="tonal" @click="sendToChatGPT">
-          <v-icon start>mdi-robot</v-icon> AI요약
-        </v-btn>
-      </div>
-      <div class="d-flex mb-5 ga-3">
         <v-btn variant="tonal" @click="share"
           ><v-icon start>mdi-share-variant</v-icon> 공유하기</v-btn
         >
+        <v-btn variant="tonal" class="export-btn" :disabled="isBusy" @click="exportPDF">
+          <v-icon start>mdi-file-pdf</v-icon> {{ isBusy ? "다운로드 중..." : "다운로드" }}
+        </v-btn>
       </div>
     </div>
 
@@ -52,26 +50,6 @@
 
       <br />
       <br />
-
-      <div v-if="ailoading || chatGPTResponse">
-        <div
-          class="mt-5 pa-4"
-          style="border: 1px solid #ccc; border-radius: 8px"
-        >
-          <v-card-title>ChatGPT 해석 결과</v-card-title>
-          <div style="white-space: pre-wrap">
-            <span v-if="!aiLoading">{{ chatGPTResponse }}</span>
-            <div v-if="ailoading">
-              <v-img
-                src="https://assets-v2.lottiefiles.com/a/9661e086-85b1-11ef-8d1f-c3a163d3fa51/9CZUREOVSt.gif"
-                width="100"
-              ></v-img>
-            </div>
-          </div>
-        </div>
-
-        <br /><br />
-      </div>
 
       <v-card-title>종합 점수</v-card-title>
       <table class="mb-2">
@@ -144,11 +122,7 @@
                 <b>
                   {{
                     categoryByTScore(
-                      convertScoreToTScore(
-                        scoreKey,
-                        gender,
-                        scores[scoreKey]
-                      )
+                      convertScoreToTScore(scoreKey, gender, scores[scoreKey])
                     )
                   }}
                 </b>
@@ -158,21 +132,12 @@
             <tr>
               <td>{{ scores[scoreKey] }}점 (점수)</td>
               <td>
-                {{
-                  convertScoreToTScore(
-                    scoreKey,
-                    gender,
-                    scores[scoreKey]
-                  )
-                }}점 (T점수)
+                {{ convertScoreToTScore(scoreKey, gender, scores[scoreKey]) }}점
+                (T점수)
               </td>
               <td>
                 {{
-                  convertScoreToPercentage(
-                    scoreKey,
-                    gender,
-                    scores[scoreKey]
-                  )
+                  convertScoreToPercentage(scoreKey, gender, scores[scoreKey])
                 }}% (백분위)
               </td>
             </tr>
@@ -182,11 +147,7 @@
                 {{
                   reading[scoreKey][
                     categoryByTScore(
-                      convertScoreToTScore(
-                        scoreKey,
-                        gender,
-                        scores[scoreKey]
-                      )
+                      convertScoreToTScore(scoreKey, gender, scores[scoreKey])
                     )
                   ]
                 }}
@@ -215,7 +176,9 @@
           <br />
 
           <p v-if="!timerFinished">남은 시간: {{ timeLeft }}초</p>
-          <p v-else>체크박스를 활성화 하시면 본인의 검사 결과를 보실 수 있습니다.</p>
+          <p v-else>
+            체크박스를 활성화 하시면 본인의 검사 결과를 보실 수 있습니다.
+          </p>
 
           <v-checkbox
             v-model="agreed"
@@ -241,6 +204,8 @@
       검사와 전문적인 도움을 받을 수 있습니다.
     </div>
 
+    <br /><br />
+
     <v-snackbar v-model="copied"> 링크가 복사되었습니다. </v-snackbar>
   </div>
 </template>
@@ -248,70 +213,65 @@
 <script setup>
 import { onMounted } from "vue";
 import Plotly from "plotly.js-dist-min";
-import axios from "axios";
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 
-const chatGPTResponse = ref("");
-const ailoading = ref(false);
+const pdfArea = ref(null)
+const isBusy = ref(false)
 
-async function sendToChatGPT() {
-  ailoading.value = true;
-  chatGPTResponse.value = "";
-  const prompt = `
-종합 점수: ${totalScore}
-T점수: ${convertScoreToTScore("종합점수", gender, totalScore)}
-백분위: ${convertScoreToPercentage("종합점수", gender, totalScore)}
-해석: ${reading["종합점수"][getCategoryByTotalScore(gender, totalScore)]}
-
-하위요인별 점수:
-${types.value
-  .map((key) => {
-    const raw = JSON.parse(scores)[key];
-    const tScore = convertScoreToTScore(key, gender, raw);
-    const percent = convertScoreToPercentage(key, gender, raw);
-    const interpretation = reading[key][categoryByTScore(tScore)];
-    return `- ${key}:
-  점수: ${raw}
-  T점수: ${tScore}
-  백분위: ${percent}%
-  해석: ${interpretation}`;
-  })
-  .join("\n")}
-  `;
-
+const exportPDF = async () => {
+  if (!pdfArea.value || isBusy.value) return
+  isBusy.value = true
   try {
-    const res = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        model: "gpt-4",
-        messages: [
-          {
-            role: "system",
-            content:
-              "당신은 심리검사 결과를 해석하는 정신건강 전문가입니다. 아래 학생의 검사 결과를 종합해서 분석해 주세요. 간결하고 친절한 언어로 2줄로 요약해 주세요.",
-          },
-          { role: "user", content: prompt },
-        ],
-        temperature: 0.7,
-      },
-      {
-        headers: {
-          Authorization:
-            "Bearer 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",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    chatGPTResponse.value = res.data.choices[0].message.content.trim();
-    ailoading.value = false;
-  } catch (err) {
-    chatGPTResponse.value = "ChatGPT 요청 중 오류가 발생했습니다.";
-    console.error(err);
+    // ensure layout is fully rendered
+    await nextTick()
+
+    // High-DPI canvas for sharper text/images
+    const canvas = await html2canvas(pdfArea.value, {
+      scale: 2,            // increase for sharper PDF (2~3)
+      useCORS: true,       // allow cross-origin images (needs proper headers)
+      backgroundColor: '#ffffff'
+    })
+
+    const imgData = canvas.toDataURL('image/png')
+
+    // Create A4 portrait PDF in mm
+    const pdf = new jsPDF('p', 'mm', 'a4')
+    const pdfW = pdf.internal.pageSize.getWidth()
+    const pdfH = pdf.internal.pageSize.getHeight()
+
+    // Fit image to page width, keep aspect
+    const imgW = pdfW
+    const imgH = (canvas.height * imgW) / canvas.width
+
+    // Add first page
+    let heightLeft = imgH
+    let position = 0
+    pdf.addImage(imgData, 'PNG', 0, position, imgW, imgH)
+    heightLeft -= pdfH
+
+    // Add extra pages as needed by shifting the same image up
+    while (heightLeft > 1) {
+      position = heightLeft - imgH // negative offset
+      pdf.addPage()
+      pdf.addImage(imgData, 'PNG', 0, position, imgW, imgH)
+      heightLeft -= pdfH
+    }
+    
+    pdf.save('export.pdf')
+  } catch (e) {
+    console.error(e)
+    alert('Failed to export PDF.')
+  } finally {
+    isBusy.value = false
   }
 }
 
 const route = useRoute();
 const encodedData = route.query.data;
-const { gender, totalScore, scores, date, studentGrade } = JSON.parse(decodeURIComponent(atob(encodedData)));
+const { gender, totalScore, scores, date, studentGrade } = JSON.parse(
+  decodeURIComponent(atob(encodedData))
+);
 const taa = ref(true);
 const agreed = ref(false);
 const timerFinished = ref(false);
@@ -399,9 +359,7 @@ function copylink() {
 
 onMounted(() => {
   const categories = types.value.map((scoreKey) =>
-    categoryByTScore(
-      convertScoreToTScore(scoreKey, gender, scores[scoreKey])
-    )
+    categoryByTScore(convertScoreToTScore(scoreKey, gender, scores[scoreKey]))
   );
 
   const colors = categories.map((category) => {
@@ -453,6 +411,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.page-wrap {
+  display: grid;
+  gap: 1rem;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

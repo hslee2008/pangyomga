@@ -3,6 +3,8 @@ import disableDevtool from "disable-devtool";
 let devtoolOpenCount = 0; // Initialize counter
 
 export default defineNuxtPlugin(() => {
+  if (process.env.NODE_ENV === "development") return;
+
   disableDevtool({
     ondevtoolopen: () => {
       const confirmResult = confirm(
