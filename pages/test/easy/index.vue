@@ -10,19 +10,55 @@
     </div>
     <h1 class="text-center">마음EASY 검사</h1>
 
-    <div v-show="agreed" style="display: flex; justify-content: center">
+    <div v-show="agreed" class="d-flex justify-center">
       <div style="max-width: 650px" class="text-justify mx-4">
-        <div
-          v-if="alerting"
-          style="border: 3px solid black"
-          class="pa-3 rounded-lg mt-4"
-        >
+        <div style="border: 3px solid black" class="pa-3 rounded-lg mt-4">
+          <h3 class="text-center">
+            마음이지(EASY) 검사 결과 데이터 활용 동의서
+          </h3>
+
+          <br />
+
+          <span class="font-weight-bold"> 데이터 활용 목적 </span><br />
+          <p>
+            본 검사는 판교고 학생들의 정신건강 상태를 이해하고, 예방 및 지원
+            프로그램 개발을 위한 기초 자료를 마련하기 위해 진행됩니다. 수집된
+            데이터는 통계 분석 및 연구 목적으로만 사용되며, 학생들의 익명성이
+            철저히 보장됩니다.
+          </p>
+
+          <br />
+
+          <span class="font-weight-bold"> 데이터 활용 범위 </span>
+          <p>
+            1. 연구 결과는 집계된 형태로만 공개되며, 특정 개인을 추적할 수
+            없습니다.
+          </p>
+          <p>
+            2. 데이터는 학교 정신건강 정책 수립, 학술 연구, 예방 프로그램 개발에
+            한 해 활용됩니다.
+          </p>
+
+          <br />
+
+          <v-radio-group inline v-model="data_agreed">
+            <v-radio label="동의합니다." value="agreed" class="mr-3"></v-radio>
+            <v-radio label="동의하지 않습니다." value="not agreed"></v-radio>
+          </v-radio-group>
+
+          <p>
+            ※ 데이터 활용에 동의하지 않으면 데이터는 저장되지 않으며, 검사는 참여할 수 있습니다. 
+          </p>
+        </div>
+
+        <div style="border: 3px solid black" class="pa-3 rounded-lg mt-4">
           <p>
             다음은 <b class="text-decoration-underline">학생 여러분</b>의 최근
             상태를 묻는 설문입니다. 이 검사에는 옳거나 그른 답이 없으므로 자신의
             의견을 있는 그대로 솔직하게 응답하면 됩니다. 다음 각 문항을 읽고,
-            주로 <b class="text-decoration-underline text-red">최근 3개월간</b> 자신의
-            모습에 해당돤다고 생각하는 곳을 선택해주세요.
+            주로
+            <b class="text-decoration-underline text-red">최근 3개월간</b>
+            자신의 모습에 해당돤다고 생각하는 곳을 선택해주세요.
           </p>
           <br />
           <p>
@@ -89,13 +125,15 @@
           제출
         </v-btn>
 
+        <br />
+
         <div class="mt-2 ml-3 text-red">
+          <div v-if="data_agreed == null">※ 마음이지(EASY) 검사 결과 데이터 활용 동의서를 작성해주세요.</div>
           <div v-if="!studentGrade">- 학년을 입력해주세요</div>
           <div
             v-if="Object.values(question).some(({ answer }) => answer === null)"
           >
             - 모든 문항에 답해주세요
-
             <div
               v-if="
                 unansweredQuestions.length > 0 &&
@@ -110,8 +148,8 @@
                 </li>
               </ul>
             </div>
+            <br />
           </div>
-          <br />
           <div v-if="!gender">- 성별을 선택해주세요</div>
         </div>
       </div>
@@ -128,13 +166,16 @@
           학생들의 정신건강을 위하여
           <span style="color: blue"
             >위(Wee)클래스와 창체동아리(심장박동&코딩인사이트)</span
-          >가 연합하여 판교고 마인즈 앱으로 개발하였습니다.<br /><br />
+          >가 연합하여 판교고 마인즈 앱으로 개발하였습니다.<br />
           - 365일 24시간 언제, 어디서나 검사 가능한 교내 마인즈앱 지원시스템
           구축으로 판교고 학생 마음건강 예방 및 관리 강화의 목적이 있습니다.
           <br /><br />
-          <span class="text-red">- 본 검사는 학년과 성별, 검사 결과 데이터만 저장되기에 개인정보 식별이
-          불가합니다.</span><br /><br />
-          <span class="text-red">- 검사 결과는 자신만 볼 수 있습니다.</span><br /><br />
+          <span class="text-red"
+            >- 본 검사는 학년과 성별, 검사 결과 데이터만 저장되기에 개인정보
+            식별이 불가합니다.</span
+          ><br />
+          <span class="text-red">- 검사 결과는 자신만 볼 수 있습니다.</span
+          ><br /><br />
 
           <v-checkbox
             v-model="agreed"
@@ -185,7 +226,7 @@ const agreed = ref(false);
 const loading = ref(false);
 const studentGrade = ref("");
 const progress = ref(0);
-const alerting = ref(true);
+const data_agreed = ref(null);
 const types = ref([
   "불안 및 우울 문제",
   "자살 및 위기 문제",
@@ -397,13 +438,11 @@ const setProgress = () => {
 };
 watch(question, setProgress, { deep: true });
 
-const test = () => {
-  for (const key in question.value) {
-    question.value[key].answer = Math.floor(Math.random() * 4);
-  }
-};
-
 const saveToDatabase = (parsedDate, totalScore, link, scores) => {
+  if (data_agreed.value !== "agreed") {
+    return;
+  }
+
   const data = {
     studentGrade: studentGrade.value,
     parsedDate,
@@ -468,7 +507,7 @@ const submit = () => {
   };
 
   const encodedData = btoa(encodeURIComponent(JSON.stringify(resultData)));
-  router.push({ path: '/test/easy/result', query: { data: encodedData } });
+  router.push({ path: "/test/easy/result", query: { data: encodedData } });
 };
 
 onMounted(() => {
