@@ -13,46 +13,6 @@
     <div v-show="agreed" class="d-flex justify-center">
       <div style="max-width: 650px" class="text-justify mx-4">
         <div style="border: 3px solid black" class="pa-3 rounded-lg mt-4">
-          <h3 class="text-center" style="white-space: nowrap">
-            마음이지(EASY) 검사 결과 데이터<br />
-            활용 동의서
-          </h3>
-
-          <br />
-
-          <span class="font-weight-bold"> 데이터 활용 목적 </span><br />
-          <p>
-            판교고 학생들의 정신건강 상태를 이해하고, 예방 및 지원 프로그램
-            개발을 위한 기초 자료로 활용되며, 수집된 데이터는 통계 분석 및 연구
-            목적으로만 사용됩니다.
-          </p>
-
-          <br />
-
-          <span class="font-weight-bold"> 데이터 활용 범위 </span>
-          <p>
-            1. 연구 결과는 집계된 형태로만 공개되며, 특정 개인을 추적할 수
-            없습니다.
-          </p>
-          <p>
-            2. 데이터는 학교 정신건강 정책 수립, 학술 연구, 예방 프로그램 개발에
-            한 해 활용됩니다.
-          </p>
-
-          <br />
-
-          <v-radio-group inline v-model="data_agreed">
-            <v-radio label="동의합니다." value="agreed" class="mr-3"></v-radio>
-            <v-radio label="동의하지 않습니다." value="not agreed"></v-radio>
-          </v-radio-group>
-
-          <p>
-            ※ 데이터 활용에 동의하지 않을 시 데이터는 저장되지 않으며, 검사는
-            참여할 수 있습니다.
-          </p>
-        </div>
-
-        <div style="border: 3px solid black" class="pa-3 rounded-lg mt-4">
           <p>
             다음은 <b class="text-decoration-underline">학생 여러분</b>의 최근
             상태를 묻는 설문입니다. 이 검사에는 옳거나 그른 답이 없으므로 자신의
@@ -160,6 +120,60 @@
 
     <br /><br />
 
+    <v-dialog v-model="data_dialog" fullscreen>
+      <v-card>
+        <v-card-title class="mt-3 text-center">
+          마음이지(EASY) 검사 결과 데이터<br />
+          활용 동의서
+        </v-card-title>
+
+        <div class="text-justify pa-5 rounded-lg">
+          <span class="font-weight-bold"> 데이터 활용 목적 </span><br />
+          <p>
+            판교고 학생들의 정신건강 상태를 이해하고, 예방 및 지원 프로그램
+            개발을 위한 기초 자료로 활용되며, 수집된 데이터는 통계 분석 및 연구
+            목적으로만 사용됩니다.
+          </p>
+
+          <br />
+
+          <span class="font-weight-bold"> 데이터 활용 범위 </span>
+          <p>
+            1. 연구 결과는 집계된 형태로만 공개되며, 특정 개인을 추적할 수
+            없습니다.
+          </p>
+          <p>
+            2. 데이터는 학교 정신건강 정책 수립, 학술 연구, 예방 프로그램 개발에
+            한 해 활용됩니다.
+          </p>
+
+          <br />
+
+          <v-radio-group inline v-model="data_agreed">
+            <v-radio label="동의합니다." value="agreed" class="mr-3"></v-radio>
+            <v-radio label="동의하지 않습니다." value="not agreed"></v-radio>
+          </v-radio-group>
+
+          <p>
+            ※ 데이터 활용에 동의하지 않을 시 데이터는 저장되지 않으며, 검사는
+            참여할 수 있습니다.
+          </p>
+
+          <br />
+
+          <v-btn
+            :disabled="data_agreed == null"
+            @click="data_dialog = false"
+            variant="tonal"
+            color="primary"
+            block
+          >
+            시작하기
+          </v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="taa" fullscreen>
       <v-card>
         <v-card-title class="text-h3 mt-3 text-center">안내</v-card-title>
@@ -192,7 +206,7 @@
             color="primary"
             block
           >
-            시작하기
+            다음으로 넘어가기
           </v-btn>
         </div>
       </v-card>
@@ -223,8 +237,10 @@ const router = useRouter();
 
 const { $db } = useNuxtApp();
 
-const gender = ref(null);
 const taa = ref(true);
+const data_dialog = ref(true);
+
+const gender = ref(null);
 const agreed = ref(false);
 const loading = ref(false);
 const studentGrade = ref("");
