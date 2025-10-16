@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-5" id="page-wrap">
+  <div class="mx-5">
     <div>
       <br /><br />
 
@@ -25,7 +25,7 @@
           class="export-btn"
           :disabled="isBusy"
           :loading="isBusy"
-          @click="exportToPDF"
+          @click="() => window.print()"
         >
           <v-icon start>mdi-file-pdf</v-icon>
           저장하기
@@ -220,7 +220,6 @@
 <script setup>
 import { onMounted } from "vue";
 import Plotly from "plotly.js-dist-min";
-import html2pdf from "html2pdf.js";
 
 const isBusy = ref(false);
 const route = useRoute();
@@ -302,16 +301,6 @@ function share() {
   });
 }
 
-const exportToPDF = () => {
-  isBusy.value = true;
-  html2pdf(document.getElementById("page-wrap"), {
-    margin: 1,
-    filename: "generated-pdf.pdf",
-  }).then(() => {
-    isBusy.value = false;
-  });
-};
-
 function copylink() {
   navigator.clipboard
     .writeText(window.location.href)
@@ -377,9 +366,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.page-wrap {
-  display: grid;
-  gap: 1rem;
+#page-wrap {
+  display: none;
 }
 
 table {
