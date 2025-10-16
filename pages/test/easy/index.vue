@@ -13,18 +13,18 @@
     <div v-show="agreed" class="d-flex justify-center">
       <div style="max-width: 650px" class="text-justify mx-4">
         <div style="border: 3px solid black" class="pa-3 rounded-lg mt-4">
-          <h3 class="text-center">
-            마음이지(EASY) 검사 결과 데이터 활용 동의서
+          <h3 class="text-center" style="white-space: nowrap">
+            마음이지(EASY) 검사 결과 데이터<br />
+            활용 동의서
           </h3>
 
           <br />
 
           <span class="font-weight-bold"> 데이터 활용 목적 </span><br />
           <p>
-            본 검사는 판교고 학생들의 정신건강 상태를 이해하고, 예방 및 지원
-            프로그램 개발을 위한 기초 자료를 마련하기 위해 진행됩니다. 수집된
-            데이터는 통계 분석 및 연구 목적으로만 사용되며, 학생들의 익명성이
-            철저히 보장됩니다.
+            판교고 학생들의 정신건강 상태를 이해하고, 예방 및 지원 프로그램
+            개발을 위한 기초 자료로 활용되며, 수집된 데이터는 통계 분석 및 연구
+            목적으로만 사용됩니다.
           </p>
 
           <br />
