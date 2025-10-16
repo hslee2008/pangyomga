@@ -47,7 +47,8 @@
           </v-radio-group>
 
           <p>
-            ※ 데이터 활용에 동의하지 않으면 데이터는 저장되지 않으며, 검사는 참여할 수 있습니다. 
+            ※ 데이터 활용에 동의하지 않을 시 데이터는 저장되지 않으며, 검사는
+            참여할 수 있습니다.
           </p>
         </div>
 
@@ -128,7 +129,9 @@
         <br />
 
         <div class="mt-2 ml-3 text-red">
-          <div v-if="data_agreed == null">※ 마음이지(EASY) 검사 결과 데이터 활용 동의서를 작성해주세요.</div>
+          <div v-if="data_agreed == null">
+            ※ 마음이지(EASY) 검사 결과 데이터 활용 동의서를 작성해주세요.
+          </div>
           <div v-if="!studentGrade">- 학년을 입력해주세요</div>
           <div
             v-if="Object.values(question).some(({ answer }) => answer === null)"
